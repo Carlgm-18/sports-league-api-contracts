@@ -1,0 +1,29 @@
+FormErrorResponse:
+  type: object
+  required: [timestamp, status, errors]
+  properties:
+    timestamp:
+      type: string
+      format: date-time
+    status:
+      type: integer
+      example: 400
+    errors:
+      type: array
+      description: "Lista detallada de fallos de validación en campos específicos"
+      items:
+        $ref: "#/ValidationError"
+
+ValidationError:
+  type: object
+  required: [field, message, rejectedValue]
+  properties:
+    field:
+      type: string
+      example: "email"
+    message:
+      type: string
+      example: "El formato del correo electrónico no es válido."
+    rejectedValue:
+      type: string
+      example: "juan-at-uib.es"

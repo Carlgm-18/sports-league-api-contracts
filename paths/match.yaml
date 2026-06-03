@@ -1,0 +1,329 @@
+matches:
+  get:
+    tags:
+      - Ligas
+    summary: Listar partidos de la liga
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+      - in: query
+        name: phaseId
+        description: "Filtrar partidos por una fase específica"
+        schema:
+          type: integer
+      - in: query
+        name: teamId
+        description: "Filtrar partidos de un equipo concreto"
+        schema:
+          type: integer
+      - in: query
+        name: status
+        description: "Filtrar por estado del partido (Ej: PENDING, ENDED)"
+        schema:
+          $ref: "../schemas/match.yaml#/MatchState"
+    responses:
+      "200":
+        description: "Calendario de partidos generados"
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../schemas/match.yaml#/MatchDetails"
+
+matchById:
+  get:
+    tags:
+      - Partidos
+    summary: Obtener detalle del partido y su acta
+    parameters:
+      - in: path
+        name: matchId
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: "Toda la info del partido"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/match.yaml#/MatchDetails"
+      "404":
+        description: "Partido no encontrado."
+
+scheduleProposals:
+  post:
+    tags:
+      - Partidos
+    summary: Negociación de fechas (Contrapropuesta)
+    parameters:
+      - in: path
+        name: matchId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/match.yaml#/MatchDateProposalRequest"
+    responses:
+      "201":
+        description: "Propuesta enviada"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: Solo Capitán."
+
+scheduleAccept:
+  patch:
+    tags:
+      - Partidos
+    summary: Aceptar propuesta de fecha
+    parameters:
+      - in: path
+        name: matchId
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: "Fecha fijada de mutuo acuerdo"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: Solo Capitán rival."
+
+scheduleForce:
+  patch:
+    tags:
+      - Partidos
+    summary: Administrador fija la fecha del partido
+    parameters:
+      - in: path
+        name: matchId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/match.yaml#/DateTimeSlotDetails"
+    responses:
+      "200":
+        description: "Fecha fijada"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: Solo Administradores."
+
+result:
+  put:
+    tags:
+      - Partidos
+    summary: Subir acta y cerrar partido
+    description: "Sube todos los periodos, eventos y resultados en bloque."
+    parameters:
+      - in: path
+        name: matchId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/match.yaml#/ResultDetails"
+    responses:
+      "200":
+        description: "Acta registrada y partido consolidado"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: Solo el Árbitro asignado."
+
+signatures:
+  patch:
+    tags:
+      - Partidos
+    summary: Firmar el acta del partido de forma individual
+    description: >
+      Permite a un capitán o árbitro firmar el acta desde su propio dispositivo.
+      El backend deduce quién está firmando mediante el token JWT, verifica que participa
+      en este partido y estampa la firma que el usuario tiene guardada en su perfil.
+    parameters:
+      - in: path
+        name: matchId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [moment]
+            properties:
+              moment:
+                type: string
+                enum: ["PRE_MATCH", "POST_MATCH"]
+                description: "Indica si es la firma previa al inicio o la validación final del resultado."
+    responses:
+      "200":
+        description: "Firma registrada correctamente en el acta."
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: El usuario actual no es ni el capitán ni el árbitro asignado a este partido."
+      "409":
+        description: "Conflicto: El usuario ya ha firmado esta acta para el momento especificado."
+
+start:
+  patch:
+    tags:
+      - Partidos
+    summary: Iniciar el partido (Cambiar estado a IN_GAME)
+    description: >
+      El árbitro principal inicia el partido. Valida que el estado actual sea SCHEDULED
+      y que las firmas PRE_MATCH obligatorias (capitanes y árbitros) estén registradas.
+    parameters:
+      - in: path
+        name: matchId
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: "Partido iniciado correctamente."
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/match.yaml#/MatchDetails"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: Solo el Árbitro asignado puede iniciar el partido."
+      "409":
+        description: "Conflicto: El partido no está en estado SCHEDULED o faltan firmas previas."
+
+finish:
+  patch:
+    tags:
+      - Partidos
+    summary: Finalizar el partido (Cambiar estado a ENDED)
+    description: >
+      El árbitro marca el final del tiempo reglamentario. Cambia el estado a ENDED,
+      bloqueando la creación de nuevos eventos (goles, tarjetas). Tras esto, quedará
+      pendiente la subida del acta final y las firmas POST_MATCH.
+    parameters:
+      - in: path
+        name: matchId
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: "Partido finalizado. Listo para el cierre de acta."
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/match.yaml#/MatchDetails"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: Solo el Árbitro asignado puede finalizar el partido."
+      "409":
+        description: "Conflicto: El partido no está en estado IN_GAME."
+
+availability:
+  get:
+    tags:
+      - Ligas
+    summary: Obtener la disponibilidad de la ubicación para una jornada
+    description: Devuelve las franjas horarias (slots) en las que la pista está libre para esta ronda.
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: phaseId
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: roundId
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: "Lista de franjas horarias disponibles de la liga"
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../schemas/match.yaml#/DateTimeSlotDetails"
+      "404":
+        description: "Ronda o liga no encontrada."
+
+  put:
+    tags:
+      - Ligas
+    summary: Establecer o actualizar la disponibilidad de la ubicación
+    description: >
+      El administrador envía la lista completa de franjas horarias en las que se pueden jugar
+      los partidos de esta jornada. Esto sobrescribe cualquier disponibilidad anterior.
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: phaseId
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: roundId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/match.yaml#/DateTimeSlotDetails"
+    responses:
+      "200":
+        description: "Disponibilidad de la ubicación guardada correctamente."
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: Solo Administradores de la liga."

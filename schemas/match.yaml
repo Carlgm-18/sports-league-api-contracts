@@ -1,0 +1,234 @@
+ProposalState:
+  type: string
+  enum: ["PENDING", "DISMISSED", "APPROVED"]
+
+MatchState:
+  type: string
+  enum: ["NOT_SCHEDULED", "SCHEDULED", "IN_GAME", "ENDED"]
+
+DateTimeSlotDetails:
+  type: object
+  required: [dateTime, duration]
+  properties:
+    dateTime:
+      type: string
+      format: date-time
+    duration:
+      type: integer
+      description: "Slot duration in hours"
+
+MatchDateProposalRequest:
+  type: object
+  required: [status, proposedAt, dateTimeSlot]
+  properties:
+    requestId:
+      type: integer
+      format: int64
+    status:
+      $ref: "#/ProposalState"
+    dateTimeSlot:
+      $ref: "#/DateTimeSlotDetails"
+    proposedAt:
+      type: string
+      format: date-time
+
+MatchDateProposalDetails:
+  type: object
+  required: [status, proposedAt, dateTimeSlot]
+  properties:
+    requestId:
+      type: integer
+      format: int64
+    status:
+      $ref: "#/ProposalState"
+    dateTimeSlot:
+      $ref: "#/DateTimeSlotDetails"
+    proposedAt:
+      type: string
+      format: date-time
+    resolvedAt:
+      type: string
+      format: date-time
+
+MatchDetails:
+  type: object
+  required: [matchId, status, proposal, roundId]
+  properties:
+    matchId:
+      type: integer
+      format: int64
+    status:
+      $ref: "#/MatchState"
+    localTeam:
+      $ref: "./team.yaml#/TeamSummary"
+    visitorTeam:
+      $ref: "./team.yaml#/TeamSummary"
+    dateTime:
+      $ref: "#/DateTimeSlotDetails"
+    proposal:
+      $ref: "#/MatchDateProposalDetails"
+    roundId:
+      type: integer
+      format: int64
+    firstReferee:
+      $ref: "./participant.yaml#/ParticipantDetails"
+    secondReferee:
+      $ref: "./participant.yaml#/ParticipantDetails"
+    resultSummary:
+      $ref: "#/ResultSummary"
+    resultDetails:
+      $ref: "#/ResultDetails"
+
+MatchSummary:
+  type: object
+  required: [matchId, status, proposal, roundId]
+  properties:
+    matchId:
+      type: integer
+      format: int64
+    status:
+      $ref: "#/MatchState"
+    localTeam:
+      $ref: "./team.yaml#/TeamSummary"
+    visitorTeam:
+      $ref: "./team.yaml#/TeamSummary"
+    dateTime:
+      $ref: "#/DateTimeSlotDetails"
+    proposalState:
+      type: string
+      enum: ["PENDING", "PROPOSED"]
+    roundId:
+      type: integer
+      format: int64
+    firstReferee:
+      $ref: "./participant.yaml#/ParticipantSummary"
+    secondReferee:
+      $ref: "./participant.yaml#/ParticipantSummary"
+    resultSummary:
+      $ref: "#/ResultSummary"
+
+ResultSummary:
+  type: object
+  required: [localTotalScore, visitorTotalScore, recordUrl]
+  properties:
+    localTotalScore:
+      type: integer
+    visitorTotalScore:
+      type: integer
+    recordUrl:
+      type: string
+      format: uri
+
+ResultDetails:
+  allOf:
+    - $ref: "#/ResultSummary"
+    - type: object
+      required: [signatures, observations, periods]
+      properties:
+        signatures:
+          type: object
+          required: [beforeMatchSignatures, afterMatchSignatures]
+          properties:
+            beforeMatchSignatures:
+              $ref: "#/MatchSignatures"
+            afterMatchSignatures:
+              $ref: "#/MatchSignatures"
+        observations:
+          type: array
+          items:
+            type: string
+        periods:
+          type: array
+          items:
+            $ref: "#/MatchPeriod"
+
+MatchSignatures:
+  type: object
+  required:
+    [
+      firstRefereeSignature,
+      secondRefereeSignature,
+      localCaptainSignature,
+      visitorCaptainSignature,
+    ]
+  properties:
+    firstRefereeSignature:
+      $ref: "./user.yaml#/SignImageUrl"
+    secondRefereeSignature:
+      $ref: "./user.yaml#/SignImageUrl"
+    localCaptainSignature:
+      $ref: "./user.yaml#/SignImageUrl"
+    visitorCaptainSignature:
+      $ref: "./user.yaml#/SignImageUrl"
+
+MatchPeriod:
+  type: object
+  required: [periodNumber, localScore, visitorScore, periodType, events]
+  properties:
+    periodNumber:
+      type: integer
+    localScore:
+      type: integer
+    visitorScore:
+      type: integer
+    periodType:
+      type: string
+      description: "Ej: HALF, QUARTER, SET"
+    events:
+      type: array
+      items:
+        anyOf:
+          - $ref: "#/SubstitutionEvent"
+          - $ref: "#/SanctionEvent"
+          - $ref: "#/TimeoutEvent"
+
+MatchEvent:
+  type: object
+  required: [happenedAtTime, atLocalScore, atVisitorScore, responsibleTeamId]
+  properties:
+    happenedAtTime:
+      type: integer
+      format: time
+    atLocalScore:
+      type: integer
+    atVisitorScore:
+      type: integer
+    responsibleTeamId:
+      type: integer
+      format: int64
+
+SubstitutionEvent:
+  allOf:
+    - $ref: "#/MatchEvent"
+    - type: object
+      required: [incomingPlayer, outgoingPlayer]
+      properties:
+        incomingPlayer:
+          $ref: "./participant.yaml#/ParticipantDetails"
+        outgoingPlayer:
+          $ref: "./participant.yaml#/ParticipantDetails"
+
+SanctionEvent:
+  allOf:
+    - $ref: "#/MatchEvent"
+    - type: object
+      required: [sactionType, reason, appliedTo]
+      properties:
+        sactionType:
+          type: string
+        reason:
+          type: string
+        appliedTo:
+          $ref: "./participant.yaml#/ParticipantDetails"
+
+TimeoutEvent:
+  allOf:
+    - $ref: "#/MatchEvent"
+    - type: object
+      required: [durationTime]
+      properties:
+        durationTime:
+          type: string
+          format: regex
+          pattern: "[0-9]{2}:[0-9]{2}"
+          description: "Timeout duration in minutes and seconds"

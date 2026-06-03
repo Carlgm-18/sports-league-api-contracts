@@ -1,0 +1,172 @@
+UserCategory:
+  type: string
+  enum: ["MALE", "FEMALE"]
+
+UserCreateRequest:
+  type: object
+  required:
+    [firstName, lastName, email, password, confirmPassword, category]
+  properties:
+    firstName:
+      type: string
+      maxLength: 50
+    lastName:
+      type: string
+      maxLength: 50
+    email:
+      type: string
+      format: email
+      maxLength: 50
+    password:
+      type: string
+      format: password
+      minLength: 10
+      maxLength: 64
+    confirmPassword:
+      type: string
+      format: password
+      minLength: 10
+      maxLength: 64
+    category:
+      $ref: "#/UserCategory"
+    licenses:
+      $ref: "#/LicensesList"
+
+UserCreateResponse:
+  type: object
+  required: [firstName, lastName, email, category]
+  properties:
+    firstName:
+      type: string
+      maxLength: 50
+    lastName:
+      type: string
+      maxLength: 50
+    email:
+      type: string
+      format: email
+      maxLength: 50
+    category:
+      $ref: "#/UserCategory"
+    licenses:
+      $ref: "#/LicensesList"
+
+UserUpdateRequest:
+  type: object
+  properties:
+    firstName:
+      type: string
+      maxLength: 50
+    lastName:
+      type: string
+      maxLength: 50
+    category:
+      $ref: "#/UserCategory"
+    licenses:
+      $ref: "#/LicensesList"
+
+UserLoginRequest:
+  type: object
+  required: [email, password]
+  properties:
+    email:
+      type: string
+      format: email
+      maxLength: 50
+    password:
+      type: string
+      format: password
+      maxLength: 50
+
+UserDetails:
+  type: object
+  required:
+    [
+      userId,
+      fullName,
+      email,
+      profileImageUrl,
+      category,
+      createdAt,
+      licenses,
+    ]
+  properties:
+    userId:
+      type: integer
+      format: int64
+    fullName:
+      type: string
+    email:
+      type: string
+      format: email
+    category:
+      $ref: "#/UserCategory"
+    createdAt:
+      type: string
+      format: date-time
+    profileImageUrl:
+      type: string
+      format: uri
+    signature:
+      $ref: "#/SignImageUrl"
+    licenses:
+      $ref: "#/LicensesList"
+
+UserSummary:
+  type: object
+  required: [userId, fullName, category, profileImageUrl]
+  properties:
+    userId:
+      type: integer
+      format: int64
+    fullName:
+      type: string
+    category:
+      $ref: "#/UserCategory"
+    profileImageUrl:
+      type: string
+      format: uri
+
+UserAuthResponse:
+  type: object
+  required: [accessToken, refreshToken, expiresIn, tokenType, user]
+  properties:
+    accessToken:
+      type: string
+      example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    refreshToken:
+      type: string
+    expiresIn:
+      type: integer
+      description: "Segundos de validez del token"
+      example: 3600
+    tokenType:
+      type: string
+      example: "Bearer"
+    user:
+      $ref: "#/UserSummary"
+
+SignImageUrl:
+  type: object
+  required: [imageUrl]
+  properties:
+    signImageUrl:
+      type: string
+      format: uri
+    uploatAt:
+      type: string
+      format: date-time
+
+LicenseElement:
+  type: object
+  required: [sport, license]
+  properties:
+    sport:
+      $ref: "./sport.yaml#/SportDetails"
+    license:
+      type: string
+
+LicensesList:
+  type: array
+  items:
+    $ref: "#/LicenseElement"

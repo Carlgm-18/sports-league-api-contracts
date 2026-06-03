@@ -1,0 +1,349 @@
+LeagueState:
+  type: string
+  enum: ["TEAM_ASSEMBLE", "MATCH_MAKING", "IN_PROGRESS", "ENDED"]
+
+LeagueCategory:
+  type: string
+  enum: ["MALE", "FEMALE", "MIXT"]
+
+LeagueCreateRequest:
+  type: object
+  required: [name, description, locationUrl, startDate, endDate, phases]
+  properties:
+    name:
+      type: string
+      maxLength: 50
+    description:
+      type: string
+      maxLength: 500
+    iconImageUrl:
+      type: string
+      format: uri
+    bannerImageUrl:
+      type: string
+      format: uri
+    locationUrl:
+      type: string
+      format: uri
+    startDate:
+      type: string
+      format: date
+    endDate:
+      type: string
+      format: date
+    maxInscriptionDate:
+      type: string
+      format: date
+    configurationId:
+      type: integer
+      format: int64
+      nullable: true
+    customConfiguration:
+      $ref: "#/ConfigurationCreateRequest"
+    punctuationSystemId:
+      type: integer
+      format: int64
+      nullable: true
+    customPunctuationSystem:
+      $ref: "#/PunctuationSystemCreateRequest"
+    phases:
+      type: array
+      minItems: 1
+      items:
+        $ref: "./phase.yaml#/PhaseCreateRequest"
+
+LeagueUpdateRequest:
+  type: object
+  properties:
+    name:
+      type: string
+      maxLength: 50
+    description:
+      type: string
+      maxLength: 500
+    iconImageUrl:
+      type: string
+      format: uri
+    bannerImageUrl:
+      type: string
+      format: uri
+    locationUrl:
+      type: string
+      format: uri
+    startDate:
+      type: string
+      format: date
+    endDate:
+      type: string
+      format: date
+    maxInscriptionDate:
+      type: string
+      format: date
+
+ConfigurationCreateRequest:
+  type: object
+  required:
+    [name, category, minTeamMembers, maxTeamMembers, roundDuration, sportId]
+  properties:
+    name:
+      type: string
+      minLength: 5
+      maxLength: 50
+    category:
+      $ref: "#/LeagueCategory"
+    minTeamFemaleIntegrants:
+      type: integer
+      minimum: 1
+    minTeamMembers:
+      type: integer
+      minimum: 2
+      maximum: 20
+    maxTeamMembers:
+      type: integer
+      minimum: 20
+      maximum: 50
+    roundDuration:
+      type: integer
+      description: "Duración de una jornada en semanas"
+      minimum: 1
+      maximum: 4
+    sportId:
+      type: integer
+      format: int64
+
+ConfigurationUpdateRequest:
+  type: object
+  properties:
+    category:
+      $ref: "#/LeagueCategory"
+    minTeamFemaleIntegrants:
+      type: integer
+    minTeamMembers:
+      type: integer
+    maxTeamMembers:
+      type: integer
+    roundDuration:
+      type: integer
+      description: "Duración de una jornada en semanas"
+
+ConfigurationDetails:
+  type: object
+  required: [category, minTeamMembers, maxTeamMembers, roundDuration, sport]
+  properties:
+    category:
+      $ref: "#/LeagueCategory"
+    minTeamFemaleIntegrants:
+      type: integer
+    minTeamMembers:
+      type: integer
+    maxTeamMembers:
+      type: integer
+    roundDuration:
+      type: integer
+      description: "Duración de una jornada en semanas"
+    sport:
+      $ref: "./sport.yaml#/SportDetails"
+
+PunctuationSystemCreateRequest:
+  type: object
+  required: [name, rules, sportId]
+  properties:
+    name:
+      type: string
+    rules:
+      type: array
+      items:
+        $ref: "#/PunctuationSystemRuleDetails"
+    sportId:
+      type: integer
+      format: int64
+
+PunctuationSystemDetails:
+  type: object
+  required: [name, rules, sport]
+  properties:
+    name:
+      type: string
+    rules:
+      type: array
+      items:
+        $ref: "#/PunctuationSystemRuleDetails"
+    sport:
+      $ref: "./sport.yaml#/SportDetails"
+
+PunctuationSystemRuleDetails:
+  type: object
+  required: [localScore, visitorScore, localPoints, visitorPoints]
+  properties:
+    localScore:
+      type: integer
+    visitorScore:
+      type: integer
+    localPoints:
+      type: integer
+    visitorPoints:
+      type: integer
+
+LeagueDetails:
+  type: object
+  required:
+    [
+      leagueId,
+      name,
+      description,
+      locationUrl,
+      startDate,
+      endDate,
+      status,
+      createdAt,
+      configuration,
+      punctuationSystem,
+    ]
+  properties:
+    leagueId:
+      type: integer
+      format: int64
+    name:
+      type: string
+    description:
+      type: string
+    iconImageUrl:
+      type: string
+      format: uri
+    bannerImageUrl:
+      type: string
+      format: uri
+    locationUrl:
+      type: string
+      format: uri
+    startDate:
+      type: string
+      format: date
+    endDate:
+      type: string
+      format: date
+    maxInscriptionDate:
+      type: string
+      format: date
+    status:
+      $ref: "#/LeagueState"
+    createdAt:
+      type: string
+      format: date-time
+    configuration:
+      $ref: "#/ConfigurationDetails"
+    punctuationSystem:
+      $ref: "#/PunctuationSystemDetails"
+
+LeagueSummary:
+  type: object
+  required:
+    [
+      leagueId,
+      name,
+      description,
+      locationUrl,
+      startDate,
+      endDate,
+      status,
+      category,
+    ]
+  properties:
+    leagueId:
+      type: integer
+      format: int64
+    name:
+      type: string
+    description:
+      type: string
+    iconImageUrl:
+      type: string
+      format: uri
+    bannerImageUrl:
+      type: string
+      format: uri
+    locationUrl:
+      type: string
+      format: uri
+    startDate:
+      type: string
+      format: date
+    endDate:
+      type: string
+      format: date
+    maxInscriptionDate:
+      type: string
+      format: date
+    status:
+      $ref: "#/LeagueState"
+    category:
+      $ref: "#/LeagueCategory"
+
+UserLeagueStatus:
+  type: object
+  required: [leagueId, roles, joinDate]
+  properties:
+    leagueId:
+      type: integer
+      format: int64
+    participantId:
+      type: integer
+      format: int64
+    teamId:
+      type: integer
+      format: int64
+      description: "Nulo si el usuario aún no tiene equipo en esta liga"
+    roles:
+      type: array
+      items:
+        $ref: "./participant.yaml#/ParticipationRoleDTO"
+    joinDate:
+      type: string
+      format: date-time
+
+LeaderboardRow:
+  type: object
+  required: [position, team, playedMatches]
+  properties:
+    position:
+      type: integer
+    team:
+      $ref: "./team.yaml#/TeamSummary"
+    playedMatches:
+      type: integer
+    wonMatches:
+      type: integer
+    lostMatches:
+      type: integer
+    drawnMatches:
+      type: integer
+    points:
+      type: integer
+    wonSets:
+      type: integer
+    lostSets:
+      type: integer
+    wonPoints:
+      type: integer
+    lostPoints:
+      type: integer
+
+LeaderboardGroup:
+  type: object
+  required: [groupId, groupName, standings]
+  description: "Esquema para agrupar clasificaciones (Ej: Grupo A, Grupo B, o 'General')"
+  properties:
+    groupId:
+      type: integer
+      format: int64
+    groupName:
+      type: string
+    standings:
+      type: array
+      items:
+        $ref: "#/LeaderboardRow"
+
+LeaderboardResponse:
+  type: array
+  items:
+    $ref: "#/LeaderboardGroup"

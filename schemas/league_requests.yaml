@@ -1,0 +1,102 @@
+RequestState:
+  type: string
+  enum: ["PENDING", "REJECTED", "ACCEPTED", "CANCELED"]
+
+BaseRequest:
+  type: object
+  required:
+    [
+      requestId,
+      requestType,
+      participantId,
+      leagueId,
+      createdAt,
+      status,
+      resolvedBy,
+    ]
+  properties:
+    requestId:
+      type: integer
+      format: int64
+    requestType:
+      type: string
+      enum: ["TEAM_JOIN", "TEAM_CREATE", "REFEREE"]
+      description: "Discriminator"
+    participantId:
+      type: integer
+      format: int64
+    leagueId:
+      type: integer
+      format: int64
+    createdAt:
+      type: string
+      format: date-time
+    resolvedAt:
+      type: string
+      format: date-time
+    rejectionReason:
+      type: string
+    status:
+      $ref: "#/RequestState"
+  discriminator:
+    propertyName: requestType
+    mapping:
+      TEAM_JOIN: "#/TeamJoinRequest"
+      TEAM_CREATE: "#/TeamCreateRequest"
+      REFEREE: "#/RefereeRequest"
+
+TeamJoinRequestProperties:
+  type: object
+  required: [teamId, playerId, way]
+  properties:
+    teamId:
+      type: integer
+      format: int64
+    playerId:
+      type: integer
+      format: int64
+    way:
+      type: string
+      enum: ["APPLIANCE", "INVITATION"]
+      description: "Indicates if the request goes from a player to a team (APPLIANCE) or from a team to a player (INVITATION)."
+
+TeamJoinRequest:
+  allOf:
+    - $ref: "#/BaseRequest"
+    - $ref: "#/TeamJoinRequestProperties"
+
+TeamCreateRequestProperties:
+  type: object
+  required:
+    [name, initials, description, motto, primaryColor, secondaryColor]
+  properties:
+    name:
+      type: string
+    initials:
+      type: string
+    description:
+      type: string
+    motto:
+      type: string
+    primaryColor:
+      type: string
+      format: regex
+      pattern: "#[0-9A-F]{6}"
+      example: "#FFAABB"
+    secondaryColor:
+      type: string
+      format: regex
+      pattern: "#[0-9A-F]{6}"
+      example: "#FFAABB"
+    iconImageUrl:
+      type: string
+      format: uri
+
+TeamCreateRequest:
+  allOf:
+    - $ref: "#/BaseRequest"
+    - $ref: "#/TeamCreateRequestProperties"
+
+RefereeRequest:
+  allOf:
+    - $ref: "#/BaseRequest"

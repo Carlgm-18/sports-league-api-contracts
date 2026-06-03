@@ -1,0 +1,452 @@
+leagues:
+  get:
+    tags:
+      - Ligas
+    summary: Listar ligas
+    security: []
+    responses:
+      "200":
+        description: "Lista de ligas"
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../schemas/league.yaml#/LeagueDetails"
+  post:
+    tags:
+      - Ligas
+    summary: Crear una nueva liga
+    description: "El creador se convierte automáticamente en Administrador."
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/league.yaml#/LeagueCreateRequest"
+    responses:
+      "201":
+        description: "Liga creada"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/league.yaml#/LeagueDetails"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+
+leagueById:
+  get:
+    tags:
+      - Ligas
+    summary: Detalle de la liga y su configuración
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: "Datos de la liga"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/league.yaml#/LeagueDetails"
+      "404":
+        description: "Liga no encontrada."
+  patch:
+    tags:
+      - Ligas
+    summary: Cambiar los detalles de una liga
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/league.yaml#/LeagueUpdateRequest"
+    responses:
+      "200":
+        description: "Cambios aplicados correctamente"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/league.yaml#/LeagueDetails"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: Solo Administradores."
+      "404":
+        description: "Liga no encontrada."
+  delete:
+    tags:
+      - Ligas
+    summary: Eliminar liga (Soft Delete)
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+    responses:
+      "204":
+        description: "Liga eliminada"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: Solo Administradores."
+
+phases:
+  get:
+    tags:
+      - Fases
+    summary: Listar todas las fases de una liga
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: "Lista de fases de la liga"
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../schemas/phase.yaml#/PhaseDetails"
+  post:
+    tags:
+      - Fases
+    summary: Añadir una nueva fase a una liga existente
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/phase.yaml#/PhaseCreateRequest"
+    responses:
+      "201":
+        description: "Fase creada con éxito"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/phase.yaml#/PhaseDetails"
+
+phaseById:
+  get:
+    tags:
+      - Fases
+    summary: Obtener los detalles de una fase específica
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: phaseId
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: "Detalles de la fase"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/phase.yaml#/PhaseDetails"
+  patch:
+    tags:
+      - Fases
+    summary: Actualizar una fase existente
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: phaseId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/phase.yaml#/PhaseUpdateRequest"
+    responses:
+      "200":
+        description: "Fase actualizada con éxito"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/phase.yaml#/PhaseDetails"
+
+incidences:
+  post:
+    tags:
+      - Incidencias
+    summary: Crear una incidencia dentro de la liga
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/incidence.yaml#/IncidenceCreateRequest"
+    responses:
+      "201":
+        description: "Incidencia reportada"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/incidence.yaml#/IncidenceDetails"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+
+incidenceById:
+  patch:
+    tags:
+      - Incidencias
+    summary: Actualizar o resolver una incidencia
+    description: Permite modificar los detalles de una incidencia específica (ej. para añadir la resolución).
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: incidenceId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/incidence.yaml#/IncidenceUpdateRequest"
+    responses:
+      "200":
+        description: "Incidencia actualizada correctamente."
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/incidence.yaml#/IncidenceDetails"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: Solo administradores o el creador original."
+      "404":
+        description: "Incidencia no encontrada."
+
+leaderboard:
+  get:
+    tags:
+      - Ligas
+    summary: Obtener la clasificación
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+      - in: query
+        name: phaseId
+        description: "ID de la fase (Apertura, Clausura, etc.) para ver su clasificación específica."
+        schema:
+          type: integer
+      - in: query
+        name: roundId
+        description: "ID de la jornada para obtener histórico."
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: "Datos de la clasificación agrupados"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/league.yaml#/LeaderboardResponse"
+      "404":
+        description: "Liga no encontrada."
+
+configuration:
+  patch:
+    tags:
+      - Ligas
+    summary: Modificar la configuración de la liga
+    description: Permite al administrador cambiar parámetros de negocio como el mínimo de jugadores, categoría o duración de las rondas sin tocar los datos básicos de la liga.
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/league.yaml#/ConfigurationUpdateRequest"
+    responses:
+      "200":
+        description: "Configuración actualizada correctamente"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/league.yaml#/ConfigurationDetails"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: Solo Administradores."
+      "404":
+        description: "Liga no encontrada."
+
+punctuationSystem:
+  put:
+    tags:
+      - Ligas
+    summary: Sobrescribir el sistema de puntuación de la liga
+    description: >
+      Reemplaza todas las reglas de puntuación existentes por las nuevas enviadas en el array.
+      Ideal para cuando el administrador cambia el formato (ej. pasar de 'mejor de 5' a 'mejor de 3' sets).
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/league.yaml#/PunctuationSystemDetails"
+    responses:
+      "200":
+        description: "Sistema de puntuación actualizado"
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../schemas/league.yaml#/PunctuationSystemRuleDetails"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: Solo Administradores."
+      "404":
+        description: "Liga no encontrada."
+
+myStatus:
+  get:
+    tags:
+      - Ligas
+    summary: Obtener el contexto del usuario actual en la liga
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: "Contexto recuperado"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/league.yaml#/UserLeagueStatus"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+
+refereeRequests:
+  post:
+    tags:
+      - Ligas
+    summary: Solicitar rol de árbitro en esta liga
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/league_requests.yaml#/RefereeRequest"
+    responses:
+      "201":
+        description: "Solicitud enviada al administrador"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+
+refereeRequestById:
+  patch:
+    tags:
+      - Ligas
+    summary: Admin acepta/rechaza solicitud de árbitro
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [status]
+            properties:
+              status:
+                $ref: "../schemas/league_requests.yaml#/RequestState"
+              rejectionReason:
+                type: string
+    responses:
+      "200":
+        description: "Solicitud resuelta"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: Solo Administrador."
+

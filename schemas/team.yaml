@@ -1,0 +1,85 @@
+TeamDetails:
+  type: object
+  required:
+    [
+      teamId,
+      name,
+      initials,
+      description,
+      motto,
+      primaryColor,
+      secondaryColor,
+      members,
+    ]
+  properties:
+    teamId:
+      type: integer
+      format: int64
+    name:
+      type: string
+    initials:
+      type: string
+      format: regex
+      pattern: "[A-Z][0-9A-Z]"
+    description:
+      type: string
+      maxLength: 500
+    motto:
+      type: string
+    primaryColor:
+      type: string
+      format: regex
+      pattern: "#[0-9A-F]{6}"
+      example: "#FFAABB"
+    secondaryColor:
+      type: string
+      format: regex
+      pattern: "#[0-9A-F]{6}"
+      example: "#FFAABB"
+    iconImageUrl:
+      type: string
+      format: uri
+    deletedAt:
+      type: string
+      format: date-time
+    members:
+      type: array
+      items:
+        $ref: "./participant.yaml#/ParticipantDetails"
+
+TeamSummary:
+  type: object
+  required: [teamId, name, initials, motto, primaryColor, secondaryColor]
+  properties:
+    teamId:
+      type: integer
+      format: int64
+    name:
+      type: string
+    initials:
+      type: string
+      format: regex
+      pattern: "[A-Z][0-9A-Z]"
+    motto:
+      type: string
+    primaryColor:
+      type: string
+      format: regex
+      pattern: "#[0-9A-F]{6}"
+      example: "#FFAABB77"
+    secondaryColor:
+      type: string
+      format: regex
+      pattern: "#[0-9A-F]{6}"
+      example: "#FFAABB77"
+    iconImageUrl:
+      type: string
+      format: uri
+
+TeamMembersDetails:
+  type: object
+  properties:
+    members:
+      type: array
+      items:
+        $ref: "./participant.yaml#/ParticipantDetails"

@@ -1,0 +1,14 @@
+RoundDetails:
+  type: object
+  required: [roundId, roundNumber, startDate]
+  properties:
+    roundId:
+      type: integer
+      format: int64
+    roundNumber:
+      type: integer
+      description: "Weekgame 1, Weekgame 2, etc."
+    startDate:
+      type: string
+      format: date
+      description: "Round start date"

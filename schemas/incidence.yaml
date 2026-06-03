@@ -1,0 +1,25 @@
+IncidenceCreateRequest:
+  type: object
+  required: [description]
+  properties:
+    description:
+      type: string
+
+IncidenceUpdateRequest:
+  type: object
+  required: [reason]
+  properties:
+    reason:
+      type: string
+
+IncidenceDetails:
+  type: object
+  required: [description, resolution]
+  properties:
+    incidenceId:
+      type: integer
+      format: int64
+    description:
+      type: string
+    resolution:
+      type: string

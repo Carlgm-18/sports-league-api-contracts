@@ -1,0 +1,201 @@
+PhaseType:
+  type: string
+  enum: ["CLASSIFICATION", "TOURNAMENT"]
+
+PhaseBaseDetails:
+  type: object
+  required: [id, name, startDate, endDate, sequenceOrder, type]
+  properties:
+    id:
+      type: integer
+      format: int64
+    name:
+      type: string
+    startDate:
+      type: string
+      format: date
+    endDate:
+      type: string
+      format: date
+    sequenceOrder:
+      type: integer
+    type:
+      $ref: "#/PhaseType"
+    rounds:
+      type: array
+      items:
+        $ref: "./round.yaml#/RoundDetails"
+
+ClassificationPhaseDetails:
+  allOf:
+    - $ref: "#/PhaseBaseDetails"
+    - type: object
+      properties:
+        groups:
+          type: array
+          items:
+            $ref: "#/ClassificationGroupDetails"
+
+TournamentPhaseDetails:
+  allOf:
+    - $ref: "#/PhaseBaseDetails"
+    - type: object
+      required: [matchesOrder, stagesNumber]
+      properties:
+        matchesOrder:
+          type: array
+          items:
+            $ref: "#/TournamentSlotDetails"
+        stagesNumber:
+          type: integer
+
+PhaseDetails:
+  oneOf:
+    - $ref: "#/ClassificationPhaseDetails"
+    - $ref: "#/TournamentPhaseDetails"
+  discriminator:
+    propertyName: type
+    mapping:
+      CLASSIFICATION: "#/ClassificationPhaseDetails"
+      TOURNAMENT: "#/TournamentPhaseDetails"
+
+PhaseCreateRequest:
+  type: object
+  required: [name, startDate, endDate, sequenceOrder, type]
+  properties:
+    name:
+      type: string
+    startDate:
+      type: string
+      format: date
+    endDate:
+      type: string
+      format: date
+    sequenceOrder:
+      type: integer
+    type:
+      $ref: "#/PhaseType"
+  discriminator:
+    propertyName: type
+    mapping:
+      CLASSIFICATION: "#/ClassificationPhaseCreateRequest"
+      TOURNAMENT: "#/TournamentPhaseCreateRequest"
+
+ClassificationPhaseCreateRequest:
+  allOf:
+    - $ref: "#/PhaseCreateRequest" # Ahora extiende PhaseCreateRequest
+    - type: object
+      properties:
+        groups:
+          type: array
+          items:
+            $ref: "#/ClassificationGroupCreateRequest"
+
+TournamentPhaseCreateRequest:
+  allOf:
+    - $ref: "#/PhaseCreateRequest" # Ahora extiende PhaseCreateRequest
+    - type: object
+      required: [stagesNumber]
+      properties:
+        stagesNumber:
+          type: integer
+
+PhaseBaseUpdateRequest:
+  type: object
+  properties:
+    name:
+      type: string
+    startDate:
+      type: string
+      format: date
+    endDate:
+      type: string
+      format: date
+    sequenceOrder:
+      type: integer
+    type:
+      $ref: "#/PhaseType"
+  discriminator:
+    propertyName: type
+    mapping:
+      CLASSIFICATION: "#/ClassificationPhaseUpdateRequest"
+      TOURNAMENT: "#/TournamentPhaseUpdateRequest"
+
+ClassificationPhaseUpdateRequest:
+  allOf:
+    - $ref: "#/PhaseBaseUpdateRequest"
+    - type: object
+      properties:
+        groups:
+          type: array
+          items:
+            $ref: "#/ClassificationGroupUpdateRequest"
+
+TournamentPhaseUpdateRequest:
+  allOf:
+    - $ref: "#/PhaseBaseUpdateRequest"
+    - type: object
+      properties:
+        matchesOrder:
+          type: array
+          items:
+            $ref: "#/TournamentSlotUpdateRequest"
+        stagesNumber:
+          type: integer
+
+PhaseUpdateRequest:
+  oneOf:
+    - $ref: "#/ClassificationPhaseUpdateRequest"
+    - $ref: "#/TournamentPhaseUpdateRequest"
+  discriminator:
+    propertyName: type
+    mapping:
+      CLASSIFICATION: "#/ClassificationPhaseUpdateRequest"
+      TOURNAMENT: "#/TournamentPhaseUpdateRequest"
+
+ClassificationGroupDetails:
+  type: object
+  required: [groupName, topWinners, teams]
+  properties:
+    groupName:
+      type: string
+    topWinners:
+      type: integer
+    teams:
+      type: array
+      items:
+        $ref: "./team.yaml#/TeamSummary"
+
+ClassificationGroupCreateRequest:
+  type: object
+  required: [groupName, topWinners]
+  properties:
+    groupName:
+      type: string
+      minLength: 5
+      maxLength: 20
+    topWinners:
+      type: integer
+
+ClassificationGroupUpdateRequest:
+  type: object
+  properties:
+    groupName:
+      type: string
+    topWinners:
+      type: integer
+
+TournamentSlotDetails:
+  type: object
+  required: [indexOrder, match]
+  properties:
+    indexOrder:
+      type: integer
+    match:
+      $ref: "./match.yaml#/MatchSummary"
+
+TournamentSlotUpdateRequest:
+  type: object
+  properties:
+    indexOrder:
+      type: integer

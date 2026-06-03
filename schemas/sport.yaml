@@ -1,0 +1,10 @@
+SportDetails:
+  type: object
+  required: [sportId, sportName]
+  properties:
+    sportId:
+      type: integer
+      format: int64
+    sportName:
+      type: string
+      maxLength: 50
