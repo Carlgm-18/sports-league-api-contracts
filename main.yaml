@@ -144,6 +144,9 @@ components:
       $ref: './schemas/league_requests.yaml#/TeamCreateRequest'
     RefereeRequest:
       $ref: './schemas/league_requests.yaml#/RefereeRequest'
+    ResolveRequestInput:
+      $ref: './schemas/league_requests.yaml#/ResolveRequestInput'
+
     MatchDateProposalRequest:
       $ref: './schemas/match.yaml#/MatchDateProposalRequest'
     MatchDateProposalDetails:

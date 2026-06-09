@@ -100,3 +100,12 @@ TeamCreateRequest:
 RefereeRequest:
   allOf:
     - $ref: "#/BaseRequest"
+
+ResolveRequestInput:
+  type: object
+  required: [status]
+  properties:
+    status:
+      $ref: "#/RequestState"
+    rejectionReason:
+      type: string
