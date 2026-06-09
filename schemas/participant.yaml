@@ -28,6 +28,14 @@ ParticipantDetails:
       type: string
       format: date-time
 
+ParticipantUpdateRequest:
+  type: object
+  required: [dorsal]
+  properties:
+    dorsal:
+      type: integer
+      description: "Player dorsal when participant is in a team"
+
 ParticipantSummary:
   type: object
   required: [participantId, fullName, roles, joinDate]

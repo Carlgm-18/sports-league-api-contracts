@@ -126,6 +126,9 @@ components:
       $ref: './schemas/participant.yaml#/ParticipantSummary'
     ParticipationRoleDTO:
       $ref: './schemas/participant.yaml#/ParticipationRoleDTO'
+    ParticipantUpdateDetails:
+      $ref: './schemas/participant.yaml#/ParticipantUpdateRequest'
+
     TeamDetails:
       $ref: './schemas/team.yaml#/TeamDetails'
     TeamSummary:
