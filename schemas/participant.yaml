@@ -19,7 +19,7 @@ ParticipantDetails:
       $ref: "./team.yaml#/TeamSummary"
     dorsal:
       type: integer
-      description: "Número del dorsal del jugador cuando está en un equipo"
+      description: "Player dorsal when participant is in a team"
     roles:
       type: array
       items:
