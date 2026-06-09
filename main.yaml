@@ -28,20 +28,6 @@ components:
       bearerFormat: JWT
 
   schemas:
-    ProposalState:
-      $ref: './schemas/match.yaml#/ProposalState'
-    RequestState:
-      $ref: './schemas/league_requests.yaml#/RequestState'
-    LeagueState:
-      $ref: './schemas/league.yaml#/LeagueState'
-    LeagueCategory:
-      $ref: './schemas/league.yaml#/LeagueCategory'
-    MatchState:
-      $ref: './schemas/match.yaml#/MatchState'
-    UserCategory:
-      $ref: './schemas/user.yaml#/UserCategory'
-    DateTimeSlotDetails:
-      $ref: './schemas/match.yaml#/DateTimeSlotDetails'
     PhaseBaseDetails:
       $ref: './schemas/phase.yaml#/PhaseBaseDetails'
     ClassificationPhaseDetails:
@@ -74,18 +60,24 @@ components:
       $ref: './schemas/phase.yaml#/TournamentSlotDetails'
     TournamentSlotUpdateRequest:
       $ref: './schemas/phase.yaml#/TournamentSlotUpdateRequest'
-    SignImageUrl:
-      $ref: './schemas/user.yaml#/SignImageUrl'
+
     SportDetails:
       $ref: './schemas/sport.yaml#/SportDetails'
-    LicenseElement:
-      $ref: './schemas/user.yaml#/LicenseElement'
-    LicensesList:
-      $ref: './schemas/user.yaml#/LicensesList'
+
+
     FormErrorResponse:
       $ref: './schemas/errors.yaml#/FormErrorResponse'
     ValidationError:
       $ref: './schemas/errors.yaml#/ValidationError'
+
+    UserCategory:
+      $ref: './schemas/user.yaml#/UserCategory'
+    SignImageUrl:
+      $ref: './schemas/user.yaml#/SignImageUrl'
+    LicenseElement:
+      $ref: './schemas/user.yaml#/LicenseElement'
+    LicensesList:
+      $ref: './schemas/user.yaml#/LicensesList'
     UserCreateRequest:
       $ref: './schemas/user.yaml#/UserCreateRequest'
     UserCreateResponse:
@@ -100,6 +92,11 @@ components:
       $ref: './schemas/user.yaml#/UserSummary'
     UserAuthResponse:
       $ref: './schemas/user.yaml#/UserAuthResponse'
+
+    LeagueState:
+      $ref: './schemas/league.yaml#/LeagueState'
+    LeagueCategory:
+      $ref: './schemas/league.yaml#/LeagueCategory'
     LeagueCreateRequest:
       $ref: './schemas/league.yaml#/LeagueCreateRequest'
     LeagueUpdateRequest:
@@ -120,6 +117,7 @@ components:
       $ref: './schemas/league.yaml#/LeagueDetails'
     LeagueSummary:
       $ref: './schemas/league.yaml#/LeagueSummary'
+
     ParticipantDetails:
       $ref: './schemas/participant.yaml#/ParticipantDetails'
     ParticipantSummary:
@@ -135,6 +133,9 @@ components:
       $ref: './schemas/team.yaml#/TeamSummary'
     TeamMembersDetails:
       $ref: './schemas/team.yaml#/TeamMembersDetails'
+
+    RequestState:
+      $ref: './schemas/league_requests.yaml#/RequestState'
     BaseRequest:
       $ref: './schemas/league_requests.yaml#/BaseRequest'
     TeamJoinRequestProperties:
@@ -150,6 +151,12 @@ components:
     ResolveRequestInput:
       $ref: './schemas/league_requests.yaml#/ResolveRequestInput'
 
+    DateTimeSlotDetails:
+      $ref: './schemas/match.yaml#/DateTimeSlotDetails'
+    ProposalState:
+      $ref: './schemas/match.yaml#/ProposalState'
+    MatchState:
+      $ref: './schemas/match.yaml#/MatchState'
     MatchDateProposalRequest:
       $ref: './schemas/match.yaml#/MatchDateProposalRequest'
     MatchDateProposalDetails:
@@ -174,12 +181,14 @@ components:
       $ref: './schemas/match.yaml#/SanctionEvent'
     TimeoutEvent:
       $ref: './schemas/match.yaml#/TimeoutEvent'
+
     IncidenceCreateRequest:
       $ref: './schemas/incidence.yaml#/IncidenceCreateRequest'
     IncidenceUpdateRequest:
       $ref: './schemas/incidence.yaml#/IncidenceUpdateRequest'
     IncidenceDetails:
       $ref: './schemas/incidence.yaml#/IncidenceDetails'
+
     UserLeagueStatus:
       $ref: './schemas/league.yaml#/UserLeagueStatus'
     LeaderboardRow:
@@ -188,6 +197,7 @@ components:
       $ref: './schemas/league.yaml#/LeaderboardGroup'
     LeaderboardResponse:
       $ref: './schemas/league.yaml#/LeaderboardResponse'
+
     RoundDetails:
       $ref: './schemas/round.yaml#/RoundDetails'
 
