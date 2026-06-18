@@ -29,132 +29,136 @@ components:
 
   schemas:
     PhaseBaseDetails:
-      $ref: './schemas/phase.yaml#/PhaseBaseDetails'
+      $ref: 'schemas/phase.yaml#/PhaseBaseDetails'
     ClassificationPhaseDetails:
-      $ref: './schemas/phase.yaml#/ClassificationPhaseDetails'
+      $ref: 'schemas/phase.yaml#/ClassificationPhaseDetails'
     TournamentPhaseDetails:
-      $ref: './schemas/phase.yaml#/TournamentPhaseDetails'
+      $ref: 'schemas/phase.yaml#/TournamentPhaseDetails'
     PhaseDetails:
-      $ref: './schemas/phase.yaml#/PhaseDetails'
+      $ref: 'schemas/phase.yaml#/PhaseDetails'
     PhaseCreateRequest:
-      $ref: './schemas/phase.yaml#/PhaseCreateRequest'
+      $ref: 'schemas/phase.yaml#/PhaseCreateRequest'
     ClassificationPhaseCreateRequest:
-      $ref: './schemas/phase.yaml#/ClassificationPhaseCreateRequest'
+      $ref: 'schemas/phase.yaml#/ClassificationPhaseCreateRequest'
     TournamentPhaseCreateRequest:
-      $ref: './schemas/phase.yaml#/TournamentPhaseCreateRequest'
+      $ref: 'schemas/phase.yaml#/TournamentPhaseCreateRequest'
     PhaseBaseUpdateRequest:
-      $ref: './schemas/phase.yaml#/PhaseBaseUpdateRequest'
+      $ref: 'schemas/phase.yaml#/PhaseBaseUpdateRequest'
     ClassificationPhaseUpdateRequest:
-      $ref: './schemas/phase.yaml#/ClassificationPhaseUpdateRequest'
+      $ref: 'schemas/phase.yaml#/ClassificationPhaseUpdateRequest'
     TournamentPhaseUpdateRequest:
-      $ref: './schemas/phase.yaml#/TournamentPhaseUpdateRequest'
+      $ref: 'schemas/phase.yaml#/TournamentPhaseUpdateRequest'
     PhaseUpdateRequest:
-      $ref: './schemas/phase.yaml#/PhaseUpdateRequest'
+      $ref: 'schemas/phase.yaml#/PhaseUpdateRequest'
     ClassificationGroupDetails:
-      $ref: './schemas/phase.yaml#/ClassificationGroupDetails'
+      $ref: 'schemas/phase.yaml#/ClassificationGroupDetails'
     ClassificationGroupCreateRequest:
-      $ref: './schemas/phase.yaml#/ClassificationGroupCreateRequest'
+      $ref: 'schemas/phase.yaml#/ClassificationGroupCreateRequest'
     ClassificationGroupUpdateRequest:
-      $ref: './schemas/phase.yaml#/ClassificationGroupUpdateRequest'
+      $ref: 'schemas/phase.yaml#/ClassificationGroupUpdateRequest'
     TournamentSlotDetails:
-      $ref: './schemas/phase.yaml#/TournamentSlotDetails'
+      $ref: 'schemas/phase.yaml#/TournamentSlotDetails'
     TournamentSlotUpdateRequest:
-      $ref: './schemas/phase.yaml#/TournamentSlotUpdateRequest'
+      $ref: 'schemas/phase.yaml#/TournamentSlotUpdateRequest'
 
     SportDetails:
-      $ref: './schemas/sport.yaml#/SportDetails'
+      $ref: 'schemas/sport.yaml#/SportDetails'
 
 
     FormErrorResponse:
-      $ref: './schemas/errors.yaml#/FormErrorResponse'
+      $ref: 'schemas/errors.yaml#/FormErrorResponse'
     ValidationError:
-      $ref: './schemas/errors.yaml#/ValidationError'
+      $ref: 'schemas/errors.yaml#/ValidationError'
 
     UserCategory:
-      $ref: './schemas/user.yaml#/UserCategory'
+      $ref: 'schemas/user.yaml#/UserCategory'
     SignImageUrl:
-      $ref: './schemas/user.yaml#/SignImageUrl'
+      $ref: 'schemas/user.yaml#/SignImageUrl'
     LicenseElement:
-      $ref: './schemas/user.yaml#/LicenseElement'
+      $ref: 'schemas/user.yaml#/LicenseElement'
     LicensesList:
-      $ref: './schemas/user.yaml#/LicensesList'
+      $ref: 'schemas/user.yaml#/LicensesList'
     UserCreateRequest:
-      $ref: './schemas/user.yaml#/UserCreateRequest'
+      $ref: 'schemas/user.yaml#/UserCreateRequest'
     UserCreateResponse:
-      $ref: './schemas/user.yaml#/UserCreateResponse'
+      $ref: 'schemas/user.yaml#/UserCreateResponse'
     UserUpdateRequest:
-      $ref: './schemas/user.yaml#/UserUpdateRequest'
+      $ref: 'schemas/user.yaml#/UserUpdateRequest'
     UserLoginRequest:
-      $ref: './schemas/user.yaml#/UserLoginRequest'
+      $ref: 'schemas/user.yaml#/UserLoginRequest'
     UserDetails:
-      $ref: './schemas/user.yaml#/UserDetails'
+      $ref: 'schemas/user.yaml#/UserDetails'
     UserSummary:
-      $ref: './schemas/user.yaml#/UserSummary'
+      $ref: 'schemas/user.yaml#/UserSummary'
     UserAuthResponse:
-      $ref: './schemas/user.yaml#/UserAuthResponse'
+      $ref: 'schemas/user.yaml#/UserAuthResponse'
 
     LeagueState:
-      $ref: './schemas/league.yaml#/LeagueState'
+      $ref: 'schemas/league.yaml#/LeagueState'
     LeagueCategory:
-      $ref: './schemas/league.yaml#/LeagueCategory'
+      $ref: 'schemas/league.yaml#/LeagueCategory'
     LeagueCreateRequest:
-      $ref: './schemas/league.yaml#/LeagueCreateRequest'
+      $ref: 'schemas/league.yaml#/LeagueCreateRequest'
     LeagueUpdateRequest:
-      $ref: './schemas/league.yaml#/LeagueUpdateRequest'
+      $ref: 'schemas/league.yaml#/LeagueUpdateRequest'
     ConfigurationCreateRequest:
-      $ref: './schemas/league.yaml#/ConfigurationCreateRequest'
+      $ref: 'schemas/league.yaml#/ConfigurationCreateRequest'
     ConfigurationUpdateRequest:
-      $ref: './schemas/league.yaml#/ConfigurationUpdateRequest'
+      $ref: 'schemas/league.yaml#/ConfigurationUpdateRequest'
     ConfigurationDetails:
-      $ref: './schemas/league.yaml#/ConfigurationDetails'
+      $ref: 'schemas/league.yaml#/ConfigurationDetails'
     PunctuationSystemCreateRequest:
-      $ref: './schemas/league.yaml#/PunctuationSystemCreateRequest'
+      $ref: 'schemas/league.yaml#/PunctuationSystemCreateRequest'
     PunctuationSystemDetails:
-      $ref: './schemas/league.yaml#/PunctuationSystemDetails'
+      $ref: 'schemas/league.yaml#/PunctuationSystemDetails'
     PunctuationSystemRuleDetails:
-      $ref: './schemas/league.yaml#/PunctuationSystemRuleDetails'
+      $ref: 'schemas/league.yaml#/PunctuationSystemRuleDetails'
     LeagueDetails:
-      $ref: './schemas/league.yaml#/LeagueDetails'
+      $ref: 'schemas/league.yaml#/LeagueDetails'
     LeagueSummary:
-      $ref: './schemas/league.yaml#/LeagueSummary'
+      $ref: 'schemas/league.yaml#/LeagueSummary'
 
     ParticipantDetails:
-      $ref: './schemas/participant.yaml#/ParticipantDetails'
+      $ref: 'schemas/participant.yaml#/ParticipantDetails'
     ParticipantSummary:
-      $ref: './schemas/participant.yaml#/ParticipantSummary'
+      $ref: 'schemas/participant.yaml#/ParticipantSummary'
     ParticipationRoleDTO:
-      $ref: './schemas/participant.yaml#/ParticipationRoleDTO'
-    ParticipantUpdateDetails:
-      $ref: './schemas/participant.yaml#/ParticipantUpdateRequest'
+      $ref: 'schemas/participant.yaml#/ParticipationRoleDTO'
+    ParticipantUpdateRequest:
+      $ref: 'schemas/participant.yaml#/ParticipantUpdateRequest'
+    ParticipantAvailabilityDetails:
+      type: array
+      items:
+        $ref: '#/components/schemas/DateTimeSlotDetails'
 
     TeamDetails:
-      $ref: './schemas/team.yaml#/TeamDetails'
+      $ref: 'schemas/team.yaml#/TeamDetails'
     TeamSummary:
-      $ref: './schemas/team.yaml#/TeamSummary'
+      $ref: 'schemas/team.yaml#/TeamSummary'
     TeamMembersDetails:
-      $ref: './schemas/team.yaml#/TeamMembersDetails'
+      $ref: 'schemas/team.yaml#/TeamMembersDetails'
 
     RequestState:
-      $ref: './schemas/league_requests.yaml#/RequestState'
+      $ref: 'schemas/league_requests.yaml#/RequestState'
     BaseRequest:
-      $ref: './schemas/league_requests.yaml#/BaseRequest'
+      $ref: 'schemas/league_requests.yaml#/BaseRequest'
     TeamJoinRequestProperties:
-      $ref: './schemas/league_requests.yaml#/TeamJoinRequestProperties'
+      $ref: 'schemas/league_requests.yaml#/TeamJoinRequestProperties'
     TeamJoinRequest:
-      $ref: './schemas/league_requests.yaml#/TeamJoinRequest'
+      $ref: 'schemas/league_requests.yaml#/TeamJoinRequest'
     TeamCreateRequestProperties:
-      $ref: './schemas/league_requests.yaml#/TeamCreateRequestProperties'
+      $ref: 'schemas/league_requests.yaml#/TeamCreateRequestProperties'
     TeamCreateRequest:
-      $ref: './schemas/league_requests.yaml#/TeamCreateRequest'
+      $ref: 'schemas/league_requests.yaml#/TeamCreateRequest'
     RefereeRequest:
-      $ref: './schemas/league_requests.yaml#/RefereeRequest'
+      $ref: 'schemas/league_requests.yaml#/RefereeRequest'
     ResolveRequestInput:
-      $ref: './schemas/league_requests.yaml#/ResolveRequestInput'
+      $ref: 'schemas/league_requests.yaml#/ResolveRequestInput'
 
     DateTimeSlotDetails:
-      $ref: './schemas/match.yaml#/DateTimeSlotDetails'
+      $ref: 'schemas/match.yaml#/DateTimeSlotDetails'
     ProposalState:
-      $ref: './schemas/match.yaml#/ProposalState'
+      $ref: 'schemas/match.yaml#/ProposalState'
     MatchState:
       $ref: 'schemas/match.yaml#/MatchState'
     MatchDateProposalCreateRequest:
@@ -162,51 +166,50 @@ components:
     MatchDateProposalResolveRequest:
       $ref: 'schemas/match.yaml#/MatchDateProposalResolveRequest'
     MatchDateProposalDetails:
-      $ref: './schemas/match.yaml#/MatchDateProposalDetails'
+      $ref: 'schemas/match.yaml#/MatchDateProposalDetails'
     MatchDetails:
       $ref: 'schemas/match.yaml#/MatchDetails'
     MatchUpdateRequest:
       $ref: 'schemas/match.yaml#/MatchUpdateRequest'
     MatchSummary:
-      $ref: './schemas/match.yaml#/MatchSummary'
+      $ref: 'schemas/match.yaml#/MatchSummary'
     ResultSummary:
-      $ref: './schemas/match.yaml#/ResultSummary'
+      $ref: 'schemas/match.yaml#/ResultSummary'
     ResultDetails:
       $ref: 'schemas/match.yaml#/ResultDetails'
     ResultRegisterRequest:
       $ref: 'schemas/match.yaml#/ResultRegisterRequest'
     MatchSignatures:
-      $ref: './schemas/match.yaml#/MatchSignatures'
+      $ref: 'schemas/match.yaml#/MatchSignatures'
     MatchPeriod:
-      $ref: './schemas/match.yaml#/MatchPeriod'
+      $ref: 'schemas/match.yaml#/MatchPeriod'
     MatchEvent:
-      $ref: './schemas/match.yaml#/MatchEvent'
+      $ref: 'schemas/match.yaml#/MatchEvent'
     SubstitutionEvent:
-      $ref: './schemas/match.yaml#/SubstitutionEvent'
+      $ref: 'schemas/match.yaml#/SubstitutionEvent'
     SanctionEvent:
-      $ref: './schemas/match.yaml#/SanctionEvent'
+      $ref: 'schemas/match.yaml#/SanctionEvent'
     TimeoutEvent:
-      $ref: './schemas/match.yaml#/TimeoutEvent'
+      $ref: 'schemas/match.yaml#/TimeoutEvent'
 
     IncidenceCreateRequest:
-      $ref: './schemas/incidence.yaml#/IncidenceCreateRequest'
-    IncidenceUpdateRequest:
-      $ref: './schemas/incidence.yaml#/IncidenceUpdateRequest'
+      $ref: 'schemas/incidence.yaml#/IncidenceCreateRequest'
     IncidenceResolutionRequest:
+      $ref: 'schemas/incidence.yaml#/IncidenceResolutionRequest'
     IncidenceDetails:
-      $ref: './schemas/incidence.yaml#/IncidenceDetails'
+      $ref: 'schemas/incidence.yaml#/IncidenceDetails'
 
     UserLeagueStatus:
-      $ref: './schemas/league.yaml#/UserLeagueStatus'
+      $ref: 'schemas/league.yaml#/UserLeagueStatus'
     LeaderboardRow:
-      $ref: './schemas/league.yaml#/LeaderboardRow'
+      $ref: 'schemas/league.yaml#/LeaderboardRow'
     LeaderboardGroup:
-      $ref: './schemas/league.yaml#/LeaderboardGroup'
+      $ref: 'schemas/league.yaml#/LeaderboardGroup'
     LeaderboardResponse:
-      $ref: './schemas/league.yaml#/LeaderboardResponse'
+      $ref: 'schemas/league.yaml#/LeaderboardResponse'
 
     RoundDetails:
-      $ref: './schemas/round.yaml#/RoundDetails'
+      $ref: 'schemas/round.yaml#/RoundDetails'
 
   responses:
     BadRequest:
@@ -223,89 +226,82 @@ security:
 
 paths:
   /sports:
-    $ref: './paths/sport.yaml#/sports'
+    $ref: 'paths/sport.yaml#/sports'
 
   /users/register:
-    $ref: './paths/user.yaml#/register'
+    $ref: 'paths/user.yaml#/register'
   /users/login:
-    $ref: './paths/user.yaml#/login'
+    $ref: 'paths/user.yaml#/login'
   /auth/external-authentication:
-    $ref: './paths/user.yaml#/externalAuthentication'
+    $ref: 'paths/user.yaml#/externalAuthentication'
   /users/me/signature:
-    $ref: './paths/user.yaml#/signature'
+    $ref: 'paths/user.yaml#/signature'
   /users/me:
-    $ref: './paths/user.yaml#/me'
+    $ref: 'paths/user.yaml#/me'
   /users/me/invitations:
-    $ref: './paths/user.yaml#/invitations'
+    $ref: 'paths/user.yaml#/invitations'
   /users/me/invitations/{requestId}:
-    $ref: './paths/user.yaml#/invitationById'
+    $ref: 'paths/user.yaml#/invitationById'
   /users/me/leagues:
-    $ref: './paths/user.yaml#/leagues'
+    $ref: 'paths/user.yaml#/leagues'
 
   /leagues:
-    $ref: './paths/league.yaml#/leagues'
+    $ref: 'paths/league.yaml#/leagues'
   /leagues/{leagueId}:
-    $ref: './paths/league.yaml#/leagueById'
+    $ref: 'paths/league.yaml#/leagueById'
   /leagues/{leagueId}/phases:
-    $ref: './paths/league.yaml#/phases'
+    $ref: 'paths/league.yaml#/phases'
   /leagues/{leagueId}/phases/{phaseId}:
-    $ref: './paths/league.yaml#/phaseById'
+    $ref: 'paths/league.yaml#/phaseById'
   /leagues/{leagueId}/incidences:
-    $ref: './paths/league.yaml#/incidences'
+    $ref: 'paths/league.yaml#/incidences'
   /leagues/{leagueId}/incidences/{incidenceId}:
-    $ref: './paths/league.yaml#/incidenceById'
+    $ref: 'paths/league.yaml#/incidenceById'
   /leagues/{leagueId}/leaderboard:
-    $ref: './paths/league.yaml#/leaderboard'
+    $ref: 'paths/league.yaml#/leaderboard'
   /leagues/{leagueId}/configuration:
-    $ref: './paths/league.yaml#/configuration'
+    $ref: 'paths/league.yaml#/configuration'
   /leagues/{leagueId}/punctuation-system:
-    $ref: './paths/league.yaml#/punctuationSystem'
+    $ref: 'paths/league.yaml#/punctuationSystem'
   /leagues/{leagueId}/my-status:
-    $ref: './paths/league.yaml#/myStatus'
+    $ref: 'paths/league.yaml#/myStatus'
   /leagues/{leagueId}/referee-requests:
-    $ref: './paths/league.yaml#/refereeRequests'
-  /leagues/{leagueId}/referee-requests/{requestId}:
-    $ref: './paths/league.yaml#/refereeRequestById'
+    $ref: 'paths/league.yaml#/refereeRequests'
 
   /leagues/{leagueId}/participants:
-    $ref: './paths/participant.yaml#/participants'
+    $ref: 'paths/participant.yaml#/participants'
   /leagues/{leagueId}/participants/{participantId}:
-    $ref: './paths/participant.yaml#/participantById'
+    $ref: 'paths/participant.yaml#/participantById'
   /leagues/{leagueId}/phases/{phaseId}/rounds/{roundId}/participants/{participantId}/availability:
-    $ref: './paths/participant.yaml#/participantAvailability'
+    $ref: 'paths/participant.yaml#/participantAvailability'
+
+  /requests/{requestId}:
+    $ref: 'paths/team.yaml#/resolveRequest'
 
   /leagues/{leagueId}/teams:
-    $ref: './paths/team.yaml#/teams'
-  /leagues/{leagueId}/teams/requests/{requestId}:
-    $ref: './paths/team.yaml#/teamRequests'
-  /leagues/{leagueId}/teams/{teamId}:
-    $ref: './paths/team.yaml#/teamById'
+    $ref: 'paths/team.yaml#/teams'
+  /teams/{teamId}:
+    $ref: 'paths/team.yaml#/teamById'
   /teams/{teamId}/join-requests:
-    $ref: './paths/team.yaml#/joinRequests'
-  /teams/{teamId}/join-requests/{requestId}:
-    $ref: './paths/team.yaml#/joinRequestById'
+    $ref: 'paths/team.yaml#/joinRequests'
   /teams/{teamId}/invitations:
-    $ref: './paths/team.yaml#/invitations'
+    $ref: 'paths/team.yaml#/invitations'
   /teams/{teamId}/members/{participantId}:
-    $ref: './paths/team.yaml#/memberById'
+    $ref: 'paths/team.yaml#/memberById'
 
   /leagues/{leagueId}/matches:
-    $ref: './paths/match.yaml#/matches'
+    $ref: 'paths/match.yaml#/matches'
   /matches/{matchId}:
-    $ref: './paths/match.yaml#/matchById'
+    $ref: 'paths/match.yaml#/matchById'
   /matches/{matchId}/schedule/proposals:
-    $ref: './paths/match.yaml#/scheduleProposals'
-  /matches/{matchId}/schedule/accept:
-    $ref: './paths/match.yaml#/scheduleAccept'
+    $ref: 'paths/match.yaml#/scheduleProposals'
+  /matches/{matchId}/schedule/proposals/{proposalId}:
+    $ref: 'paths/match.yaml#/scheduleProposalResolve'
   /matches/{matchId}/schedule/force:
-    $ref: './paths/match.yaml#/scheduleForce'
+    $ref: 'paths/match.yaml#/scheduleForce'
   /matches/{matchId}/result:
-    $ref: './paths/match.yaml#/result'
+    $ref: 'paths/match.yaml#/result'
   /matches/{matchId}/signatures:
-    $ref: './paths/match.yaml#/signatures'
-  /matches/{matchId}/start:
-    $ref: './paths/match.yaml#/start'
-  /matches/{matchId}/finish:
-    $ref: './paths/match.yaml#/finish'
+    $ref: 'paths/match.yaml#/signatures'
   /leagues/{leagueId}/phases/{phaseId}/rounds/{roundId}/availability:
-    $ref: './paths/match.yaml#/availability'
+    $ref: 'paths/match.yaml#/availability'
