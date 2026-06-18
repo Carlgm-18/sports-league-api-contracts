@@ -8,14 +8,20 @@ MatchState:
 
 DateTimeSlotDetails:
   type: object
-  required: [dateTime, duration]
+  required: [dateTimeSlotId, dateTime, duration, roundId]
   properties:
+    dateTimeSlotId:
+      type: integer
+      format: int64
     dateTime:
       type: string
       format: date-time
     duration:
       type: integer
       description: "Slot duration in hours"
+    roundId:
+      type: integer
+      format: int64
 
 MatchDateProposalRequest:
   type: object
