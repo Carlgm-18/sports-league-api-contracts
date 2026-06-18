@@ -247,7 +247,7 @@ incidenceById:
       content:
         application/json:
           schema:
-            $ref: "../schemas/incidence.yaml#/IncidenceUpdateRequest"
+            $ref: "../schemas/incidence.yaml#/IncidenceResolutionRequest"
     responses:
       "200":
         description: "Incidencia actualizada correctamente."
