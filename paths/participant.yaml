@@ -169,7 +169,9 @@ participantAvailability:
           schema:
             type: array
             items:
-              $ref: "../schemas/match.yaml#/DateTimeSlotDetails"
+              type: integer
+              format: int64
+              description: 'dateTimeSlotIds'
     responses:
       "200":
         description: "Disponibilidad del participante guardada correctamente."

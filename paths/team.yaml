@@ -42,17 +42,12 @@ teams:
       "401":
         $ref: "../main.yaml#/components/responses/Unauthorized"
 
-teamRequests:
+resolveRequest:
   patch:
     tags:
-      - Ligas
-    summary: Admin acepta/rechaza solicitud de creación de equipo
+      - Solicitudes
+    summary: Admin acepta/rechaza solicitud
     parameters:
-      - in: path
-        name: leagueId
-        required: true
-        schema:
-          type: integer
       - in: path
         name: requestId
         required: true
@@ -62,16 +57,14 @@ teamRequests:
       content:
         application/json:
           schema:
-            type: object
-            required: [status]
-            properties:
-              status:
-                $ref: "../schemas/league_requests.yaml#/RequestState"
-              rejectionReason:
-                type: string
+            $ref: "../schemas/league_requests.yaml#/ResolveRequestInput"
     responses:
       "200":
-        description: "Solicitud resuelta. Si es ACCEPTED, el creador se vuelve CAPITÁN."
+        description: "Solicitud resuelta"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/league_requests.yaml#/BaseRequest"
       "401":
         $ref: "../main.yaml#/components/responses/Unauthorized"
       "403":
@@ -83,11 +76,6 @@ teamById:
       - Ligas
     summary: Obtener detalle del equipo
     parameters:
-      - in: path
-        name: leagueId
-        required: true
-        schema:
-          type: integer
       - in: path
         name: teamId
         required: true
@@ -109,11 +97,6 @@ teamById:
       - Ligas
     summary: Eliminar equipo (Soft Delete)
     parameters:
-      - in: path
-        name: leagueId
-        required: true
-        schema:
-          type: integer
       - in: path
         name: teamId
         required: true

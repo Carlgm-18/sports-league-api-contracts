@@ -55,6 +55,32 @@ matchById:
       "404":
         description: "Partido no encontrado."
 
+  patch:
+    tags:
+      - Partidos
+    summary: Actualizar estado del partido (iniciar/finalizar)
+    parameters:
+      - in: path
+        name: matchId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/match.yaml#/MatchUpdateRequest"
+    responses:
+      "200":
+        description: "Partido actualizado correctamente"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/match.yaml#/MatchDetails"
+      "404":
+        description: "Partido no encontrado."
+
 scheduleProposals:
   post:
     tags:
@@ -70,7 +96,7 @@ scheduleProposals:
       content:
         application/json:
           schema:
-            $ref: "../schemas/match.yaml#/MatchDateProposalRequest"
+            $ref: "../schemas/match.yaml#/MatchDateProposalCreateRequest"
     responses:
       "201":
         description: "Propuesta enviada"
@@ -81,20 +107,35 @@ scheduleProposals:
       "403":
         description: "Prohibido: Solo Capitán."
 
-scheduleAccept:
+scheduleProposalResolve:
   patch:
     tags:
       - Partidos
-    summary: Aceptar propuesta de fecha
+    summary: Aceptar/rechazar propuesta de fecha
     parameters:
       - in: path
         name: matchId
         required: true
         schema:
           type: integer
+      - in: path
+        name: proposalId
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/match.yaml#/MatchDateProposalResolveRequest"
     responses:
       "200":
-        description: "Fecha fijada de mutuo acuerdo"
+        description: "Propuesta resuelta correctamente"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/match.yaml#/MatchDetails"
       "401":
         $ref: "../main.yaml#/components/responses/Unauthorized"
       "403":
@@ -192,66 +233,6 @@ signatures:
       "409":
         description: "Conflicto: El usuario ya ha firmado esta acta para el momento especificado."
 
-start:
-  patch:
-    tags:
-      - Partidos
-    summary: Iniciar el partido (Cambiar estado a IN_GAME)
-    description: >
-      El árbitro principal inicia el partido. Valida que el estado actual sea SCHEDULED
-      y que las firmas PRE_MATCH obligatorias (capitanes y árbitros) estén registradas.
-    parameters:
-      - in: path
-        name: matchId
-        required: true
-        schema:
-          type: integer
-    responses:
-      "200":
-        description: "Partido iniciado correctamente."
-        content:
-          application/json:
-            schema:
-              $ref: "../schemas/match.yaml#/MatchDetails"
-      "400":
-        $ref: "../main.yaml#/components/responses/BadRequest"
-      "401":
-        $ref: "../main.yaml#/components/responses/Unauthorized"
-      "403":
-        description: "Prohibido: Solo el Árbitro asignado puede iniciar el partido."
-      "409":
-        description: "Conflicto: El partido no está en estado SCHEDULED o faltan firmas previas."
-
-finish:
-  patch:
-    tags:
-      - Partidos
-    summary: Finalizar el partido (Cambiar estado a ENDED)
-    description: >
-      El árbitro marca el final del tiempo reglamentario. Cambia el estado a ENDED,
-      bloqueando la creación de nuevos eventos (goles, tarjetas). Tras esto, quedará
-      pendiente la subida del acta final y las firmas POST_MATCH.
-    parameters:
-      - in: path
-        name: matchId
-        required: true
-        schema:
-          type: integer
-    responses:
-      "200":
-        description: "Partido finalizado. Listo para el cierre de acta."
-        content:
-          application/json:
-            schema:
-              $ref: "../schemas/match.yaml#/MatchDetails"
-      "400":
-        $ref: "../main.yaml#/components/responses/BadRequest"
-      "401":
-        $ref: "../main.yaml#/components/responses/Unauthorized"
-      "403":
-        description: "Prohibido: Solo el Árbitro asignado puede finalizar el partido."
-      "409":
-        description: "Conflicto: El partido no está en estado IN_GAME."
 
 availability:
   get:
