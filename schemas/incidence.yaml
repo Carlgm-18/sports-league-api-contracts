@@ -14,7 +14,7 @@ IncidenceResolutionRequest:
 
 IncidenceDetails:
   type: object
-  required: [description, resolution]
+  required: [incidenceId, description, creator]
   properties:
     incidenceId:
       type: integer
@@ -23,3 +23,5 @@ IncidenceDetails:
       type: string
     resolution:
       type: string
+    creator:
+      $ref: './participant.yaml#/ParticipantSummary'
