@@ -114,8 +114,6 @@ ConfigurationCreateRequest:
 ConfigurationUpdateRequest:
   type: object
   properties:
-    category:
-      $ref: "#/LeagueCategory"
     minTeamFemaleIntegrants:
       type: integer
     minTeamMembers:
