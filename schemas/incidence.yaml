@@ -5,11 +5,11 @@ IncidenceCreateRequest:
     description:
       type: string
 
-IncidenceUpdateRequest:
+IncidenceResolutionRequest:
   type: object
-  required: [reason]
+  required: [resolution]
   properties:
-    reason:
+    resolution:
       type: string
 
 IncidenceDetails:

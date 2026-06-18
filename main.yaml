@@ -186,6 +186,7 @@ components:
       $ref: './schemas/incidence.yaml#/IncidenceCreateRequest'
     IncidenceUpdateRequest:
       $ref: './schemas/incidence.yaml#/IncidenceUpdateRequest'
+    IncidenceResolutionRequest:
     IncidenceDetails:
       $ref: './schemas/incidence.yaml#/IncidenceDetails'
 
