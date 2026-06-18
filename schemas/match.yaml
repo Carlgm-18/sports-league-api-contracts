@@ -23,26 +23,26 @@ DateTimeSlotDetails:
       type: integer
       format: int64
 
-MatchDateProposalRequest:
+MatchDateProposalCreateRequest:
   type: object
-  required: [status, proposedAt, dateTimeSlot]
+  required: [dateTimeSlotId]
   properties:
-    requestId:
+    dateTimeSlotId:
       type: integer
       format: int64
+
+MatchDateProposalResolveRequest:
+  type: object
+  required: [status]
+  properties:
     status:
       $ref: "#/ProposalState"
-    dateTimeSlot:
-      $ref: "#/DateTimeSlotDetails"
-    proposedAt:
-      type: string
-      format: date-time
 
 MatchDateProposalDetails:
   type: object
-  required: [status, proposedAt, dateTimeSlot]
+  required: [proposalId, status, proposedAt, dateTimeSlot]
   properties:
-    requestId:
+    proposalId:
       type: integer
       format: int64
     status:
@@ -56,9 +56,44 @@ MatchDateProposalDetails:
       type: string
       format: date-time
 
+MatchUpdateRequest:
+  type: object
+  required: [ status ]
+  properties:
+    status:
+      $ref: '#/MatchState'
+    result:
+      $ref: '#/ResultRegisterRequest'
+
+
+ResultRegisterRequest:
+  type: object
+  required: [ signatures, observations, periods, winnerTeamId ]
+  properties:
+    winnerTeamId:
+      type: integer
+      format: int64
+    signatures:
+      type: object
+      required: [ beforeMatchSignatures, afterMatchSignatures ]
+      properties:
+        beforeMatchSignatures:
+          $ref: "#/MatchSignatures"
+        afterMatchSignatures:
+          $ref: "#/MatchSignatures"
+    observations:
+      type: array
+      items:
+        type: string
+    periods:
+      type: array
+      items:
+        $ref: "#/MatchPeriod"
+
+
 MatchDetails:
   type: object
-  required: [matchId, status, proposal, roundId]
+  required: [matchId, status, roundId]
   properties:
     matchId:
       type: integer
@@ -73,6 +108,7 @@ MatchDetails:
       $ref: "#/DateTimeSlotDetails"
     proposal:
       $ref: "#/MatchDateProposalDetails"
+      nullable: true
     roundId:
       type: integer
       format: int64

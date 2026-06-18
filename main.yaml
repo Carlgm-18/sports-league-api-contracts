@@ -156,19 +156,25 @@ components:
     ProposalState:
       $ref: './schemas/match.yaml#/ProposalState'
     MatchState:
-      $ref: './schemas/match.yaml#/MatchState'
-    MatchDateProposalRequest:
-      $ref: './schemas/match.yaml#/MatchDateProposalRequest'
+      $ref: 'schemas/match.yaml#/MatchState'
+    MatchDateProposalCreateRequest:
+      $ref: 'schemas/match.yaml#/MatchDateProposalCreateRequest'
+    MatchDateProposalResolveRequest:
+      $ref: 'schemas/match.yaml#/MatchDateProposalResolveRequest'
     MatchDateProposalDetails:
       $ref: './schemas/match.yaml#/MatchDateProposalDetails'
     MatchDetails:
-      $ref: './schemas/match.yaml#/MatchDetails'
+      $ref: 'schemas/match.yaml#/MatchDetails'
+    MatchUpdateRequest:
+      $ref: 'schemas/match.yaml#/MatchUpdateRequest'
     MatchSummary:
       $ref: './schemas/match.yaml#/MatchSummary'
     ResultSummary:
       $ref: './schemas/match.yaml#/ResultSummary'
     ResultDetails:
-      $ref: './schemas/match.yaml#/ResultDetails'
+      $ref: 'schemas/match.yaml#/ResultDetails'
+    ResultRegisterRequest:
+      $ref: 'schemas/match.yaml#/ResultRegisterRequest'
     MatchSignatures:
       $ref: './schemas/match.yaml#/MatchSignatures'
     MatchPeriod:
