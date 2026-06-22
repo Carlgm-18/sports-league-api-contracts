@@ -2,6 +2,10 @@ RequestState:
   type: string
   enum: ["PENDING", "REJECTED", "ACCEPTED", "CANCELED"]
 
+RequestType:
+  type: string
+  enum: ["TEAM_JOIN", "TEAM_CREATE", "REFEREE"]
+
 BaseRequest:
   type: object
   required:
@@ -19,8 +23,7 @@ BaseRequest:
       type: integer
       format: int64
     requestType:
-      type: string
-      enum: ["TEAM_JOIN", "TEAM_CREATE", "REFEREE"]
+      $ref: '#/RequestType'
       description: "Discriminator"
     participantId:
       type: integer
