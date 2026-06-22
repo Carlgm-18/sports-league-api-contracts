@@ -86,6 +86,8 @@ components:
       $ref: 'schemas/user.yaml#/UserUpdateRequest'
     UserLoginRequest:
       $ref: 'schemas/user.yaml#/UserLoginRequest'
+    RefreshTokenRequest:
+      $ref: 'schemas/user.yaml#/RefreshTokenRequest'
     UserDetails:
       $ref: 'schemas/user.yaml#/UserDetails'
     UserSummary:

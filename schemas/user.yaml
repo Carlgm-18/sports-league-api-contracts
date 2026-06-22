@@ -78,6 +78,13 @@ UserLoginRequest:
       format: password
       maxLength: 50
 
+RefreshTokenRequest:
+  type: object
+  required: [refreshToken]
+  properties:
+    refreshToken:
+      type: string
+
 UserDetails:
   type: object
   required:
@@ -145,6 +152,8 @@ UserAuthResponse:
       example: "Bearer"
     user:
       $ref: "#/UserSummary"
+
+
 
 SignImageUrl:
   type: object
