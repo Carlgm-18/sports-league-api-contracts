@@ -118,11 +118,13 @@ scheduleProposalResolve:
         required: true
         schema:
           type: integer
+          format: int64
       - in: path
         name: proposalId
         required: true
         schema:
           type: integer
+          format: int64
     requestBody:
       required: true
       content:
@@ -130,16 +132,85 @@ scheduleProposalResolve:
           schema:
             $ref: "../schemas/match.yaml#/MatchDateProposalResolveRequest"
     responses:
-      "200":
+      "201":
         description: "Propuesta resuelta correctamente"
         content:
           application/json:
             schema:
-              $ref: "../schemas/match.yaml#/MatchDetails"
+              $ref: "../schemas/match.yaml#/MatchDateProposalDetails"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
       "401":
         $ref: "../main.yaml#/components/responses/Unauthorized"
       "403":
         description: "Prohibido: Solo Capitán rival."
+      "404":
+        description: "Propuesta o partido no encontrado."
+
+autoAssignReferee:
+  post:
+    tags:
+      - Partidos
+    summary: Asignar árbitro automáticamente al partido
+    parameters:
+      - in: path
+        name: matchId
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      "200":
+        description: "Árbitro asignado con éxito"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/match.yaml#/MatchDetails"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "404":
+        description: "Partido no encontrado."
+      "500":
+        description: "No hay árbitros disponibles."
+
+forceAssignReferee:
+  put:
+    tags:
+      - Partidos
+    summary: Asignar árbitro manualmente al partido
+    parameters:
+      - in: path
+        name: matchId
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - in: query
+        name: refereeType
+        required: true
+        schema:
+          $ref: "../schemas/match.yaml#/RefereeType"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/match.yaml#/ForceRefereeRequest"
+    responses:
+      "200":
+        description: "Árbitro asignado con éxito"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/match.yaml#/MatchDetails"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "404":
+        description: "Partido o árbitro no encontrado."
 
 scheduleForce:
   patch:
@@ -152,6 +223,7 @@ scheduleForce:
         required: true
         schema:
           type: integer
+          format: int64
     requestBody:
       required: true
       content:
@@ -178,6 +250,7 @@ result:
         required: true
         schema:
           type: integer
+          format: int64
     requestBody:
       required: true
       content:
@@ -187,6 +260,10 @@ result:
     responses:
       "200":
         description: "Acta registrada y partido consolidado"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/match.yaml#/ResultDetails"
       "400":
         $ref: "../main.yaml#/components/responses/BadRequest"
       "401":
@@ -209,6 +286,7 @@ signatures:
         required: true
         schema:
           type: integer
+          format: int64
     requestBody:
       required: true
       content:
@@ -237,28 +315,19 @@ signatures:
 availability:
   get:
     tags:
-      - Ligas
+      - Jornadas
     summary: Obtener la disponibilidad de la ubicación para una jornada
     description: Devuelve las franjas horarias (slots) en las que la pista está libre para esta ronda.
     parameters:
-      - in: path
-        name: leagueId
-        required: true
-        schema:
-          type: integer
-      - in: path
-        name: phaseId
-        required: true
-        schema:
-          type: integer
       - in: path
         name: roundId
         required: true
         schema:
           type: integer
+          format: int64
     responses:
       "200":
-        description: "Lista de franjas horarias disponibles de la liga"
+        description: "Lista de franjas horarias disponibles de la jornada"
         content:
           application/json:
             schema:
@@ -266,31 +335,22 @@ availability:
               items:
                 $ref: "../schemas/match.yaml#/DateTimeSlotDetails"
       "404":
-        description: "Ronda o liga no encontrada."
+        description: "Ronda no encontrada."
 
   put:
     tags:
-      - Ligas
-    summary: Establecer o actualizar la disponibilidad de la ubicación
+      - Jornadas
+    summary: Establecer o actualizar la disponibilidad de la ubicación para una jornada
     description: >
       El administrador envía la lista completa de franjas horarias en las que se pueden jugar
       los partidos de esta jornada. Esto sobrescribe cualquier disponibilidad anterior.
     parameters:
       - in: path
-        name: leagueId
-        required: true
-        schema:
-          type: integer
-      - in: path
-        name: phaseId
-        required: true
-        schema:
-          type: integer
-      - in: path
         name: roundId
         required: true
         schema:
           type: integer
+          format: int64
     requestBody:
       required: true
       content:
@@ -302,6 +362,12 @@ availability:
     responses:
       "200":
         description: "Disponibilidad de la ubicación guardada correctamente."
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../schemas/match.yaml#/DateTimeSlotDetails"
       "400":
         $ref: "../main.yaml#/components/responses/BadRequest"
       "401":

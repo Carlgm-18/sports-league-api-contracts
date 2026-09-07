@@ -274,3 +274,18 @@ TimeoutEvent:
           format: regex
           pattern: "[0-9]{2}:[0-9]{2}"
           description: "Timeout duration in minutes and seconds"
+
+RefereeType:
+  type: string
+  enum:
+    - FIRST
+    - SECOND
+
+ForceRefereeRequest:
+  type: object
+  required: [refereeId]
+  properties:
+    refereeId:
+      type: integer
+      format: int64
+

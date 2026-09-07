@@ -13,6 +13,10 @@ register:
     responses:
       "201":
         description: "Usuario creado con éxito"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/user.yaml#/UserCreateResponse"
       "400":
         $ref: "../main.yaml#/components/responses/BadRequest"
       "409":
@@ -44,6 +48,28 @@ login:
             schema:
               $ref: "../schemas/errors.yaml#/FormErrorResponse"
 
+refreshToken:
+  post:
+    tags:
+      - Usuarios
+    summary: Refrescar token de acceso
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/user.yaml#/RefreshTokenRequest"
+    responses:
+      "200":
+        description: "Devuelve el nuevo JWT Token"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/user.yaml#/UserAuthResponse"
+      "401":
+        description: "Refresh token inválido"
+
 externalAuthentication:
   post:
     tags:
@@ -70,9 +96,24 @@ externalAuthentication:
         description: "Servicio no disponible"
 
 signature:
-  put:
-    summary: Actualizar la firma del usuario
-    description: "Pide una URL prefirmada al backend para persistir la imagen de la firma y sube la URL para acceder desde el sistema S3."
+  get:
+    summary: Obtener la firma del usuario actual
+    tags:
+      - Usuarios
+    responses:
+      "200":
+        description: "Firma encontrada"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/user.yaml#/SignImageUrl"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "404":
+        description: "Firma no encontrada"
+  post:
+    summary: Guardar la firma del usuario
+    description: "Sube la URL de la imagen de la firma del usuario."
     tags:
       - Usuarios
     requestBody:
@@ -84,6 +125,10 @@ signature:
     responses:
       "200":
         description: "Firma guardada"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/user.yaml#/SignImageUrl"
       "401":
         $ref: "../main.yaml#/components/responses/Unauthorized"
 
@@ -111,7 +156,7 @@ me:
           schema:
             $ref: "../schemas/user.yaml#/UserUpdateRequest"
     responses:
-      "200":
+      "201":
         description: "Cambios guardados de forma exitosa"
         content:
           application/json:
@@ -140,32 +185,6 @@ invitations:
       "401":
         $ref: "../main.yaml#/components/responses/Unauthorized"
 
-invitationById:
-  patch:
-    summary: Jugador acepta/rechaza unirse a un equipo
-    tags:
-      - Usuarios
-    parameters:
-      - in: path
-        name: requestId
-        required: true
-        schema:
-          type: integer
-    requestBody:
-      content:
-        application/json:
-          schema:
-            type: object
-            required: [status]
-            properties:
-              status:
-                $ref: "../schemas/league_requests.yaml#/RequestState"
-    responses:
-      "200":
-        description: "Invitación resuelta"
-      "401":
-        $ref: "../main.yaml#/components/responses/Unauthorized"
-
 leagues:
   get:
     tags:
@@ -179,6 +198,6 @@ leagues:
             schema:
               type: array
               items:
-                $ref: "../schemas/league.yaml#/LeagueDetails"
+                $ref: "../schemas/league.yaml#/LeagueSummary"
       "401":
         $ref: "../main.yaml#/components/responses/Unauthorized"

@@ -1,0 +1,12 @@
+StorageUrlResponse:
+  type: object
+  required: [uploadUrl, publicUrl]
+  properties:
+    uploadUrl:
+      type: string
+      format: uri
+      description: "Presigned URL to upload file to S3/MinIO"
+    publicUrl:
+      type: string
+      format: uri
+      description: "Public URL to access the uploaded file"

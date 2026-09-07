@@ -1,7 +1,7 @@
 teams:
   get:
     tags:
-      - Ligas
+      - Equipos
     summary: Listar equipos de la liga
     parameters:
       - in: path
@@ -9,6 +9,7 @@ teams:
         required: true
         schema:
           type: integer
+          format: int64
     responses:
       "200":
         description: "Lista de equipos"
@@ -18,62 +19,11 @@ teams:
               type: array
               items:
                 $ref: "../schemas/team.yaml#/TeamDetails"
-  post:
-    tags:
-      - Ligas
-    summary: Solicitar creación de un equipo
-    parameters:
-      - in: path
-        name: leagueId
-        required: true
-        schema:
-          type: integer
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: "../schemas/league_requests.yaml#/TeamCreateRequest"
-    responses:
-      "201":
-        description: "Solicitud de equipo enviada"
-      "400":
-        $ref: "../main.yaml#/components/responses/BadRequest"
-      "401":
-        $ref: "../main.yaml#/components/responses/Unauthorized"
-
-resolveRequest:
-  patch:
-    tags:
-      - Solicitudes
-    summary: Admin acepta/rechaza solicitud
-    parameters:
-      - in: path
-        name: requestId
-        required: true
-        schema:
-          type: integer
-    requestBody:
-      content:
-        application/json:
-          schema:
-            $ref: "../schemas/league_requests.yaml#/ResolveRequestInput"
-    responses:
-      "200":
-        description: "Solicitud resuelta"
-        content:
-          application/json:
-            schema:
-              $ref: "../schemas/league_requests.yaml#/BaseRequest"
-      "401":
-        $ref: "../main.yaml#/components/responses/Unauthorized"
-      "403":
-        description: "Prohibido: Solo Administrador."
 
 teamById:
   get:
     tags:
-      - Ligas
+      - Equipos
     summary: Obtener detalle del equipo
     parameters:
       - in: path
@@ -81,6 +31,7 @@ teamById:
         required: true
         schema:
           type: integer
+          format: int64
     responses:
       "200":
         description: "Detalle del equipo"
@@ -94,14 +45,15 @@ teamById:
         description: "Equipo no encontrado."
   delete:
     tags:
-      - Ligas
-    summary: Eliminar equipo (Soft Delete)
+      - Equipos
+    summary: Eliminar equipo
     parameters:
       - in: path
         name: teamId
         required: true
         schema:
           type: integer
+          format: int64
     responses:
       "204":
         description: "Equipo eliminado"
@@ -109,30 +61,10 @@ teamById:
         $ref: "../main.yaml#/components/responses/Unauthorized"
       "403":
         description: "Prohibido: Solo Capitán o Admin."
+      "404":
+        description: "Equipo no encontrado."
 
 joinRequests:
-  post:
-    tags:
-      - Equipos
-    summary: Jugador solicita unirse al equipo
-    parameters:
-      - in: path
-        name: teamId
-        required: true
-        schema:
-          type: integer
-    requestBody:
-      content:
-        application/json:
-          schema:
-            $ref: "../schemas/league_requests.yaml#/TeamJoinRequest"
-    responses:
-      "201":
-        description: "Solicitud pendiente para el capitán"
-      "400":
-        $ref: "../main.yaml#/components/responses/BadRequest"
-      "401":
-        $ref: "../main.yaml#/components/responses/Unauthorized"
   get:
     tags:
       - Equipos
@@ -143,9 +75,10 @@ joinRequests:
         required: true
         schema:
           type: integer
+          format: int64
     responses:
       "200":
-        description: "Lista de solicitudes pendientes"
+        description: "Lista de solicitudes de unión pendientes"
         content:
           application/json:
             schema:
@@ -156,39 +89,8 @@ joinRequests:
         $ref: "../main.yaml#/components/responses/Unauthorized"
       "403":
         description: "Prohibido: Solo Capitán."
-
-joinRequestById:
-  patch:
-    tags:
-      - Equipos
-    summary: Capitán acepta/rechaza solicitud de jugador
-    parameters:
-      - in: path
-        name: teamId
-        required: true
-        schema:
-          type: integer
-      - in: path
-        name: requestId
-        required: true
-        schema:
-          type: integer
-    requestBody:
-      content:
-        application/json:
-          schema:
-            type: object
-            required: [status]
-            properties:
-              status:
-                $ref: "../schemas/league_requests.yaml#/RequestState"
-    responses:
-      "200":
-        description: "Estado actualizado"
-      "401":
-        $ref: "../main.yaml#/components/responses/Unauthorized"
-      "403":
-        description: "Prohibido: Solo Capitán."
+      "404":
+        description: "Equipo no encontrado."
 
 invitations:
   post:
@@ -201,6 +103,7 @@ invitations:
         required: true
         schema:
           type: integer
+          format: int64
     requestBody:
       required: true
       content:
@@ -215,12 +118,20 @@ invitations:
     responses:
       "201":
         description: "Invitación enviada al jugador"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/league_requests.yaml#/BaseRequest"
       "400":
         $ref: "../main.yaml#/components/responses/BadRequest"
       "401":
         $ref: "../main.yaml#/components/responses/Unauthorized"
       "403":
         description: "Prohibido: Solo Capitán."
+      "404":
+        description: "Equipo o participante no encontrado."
+      "409":
+        description: "El jugador ya tiene equipo."
 
 memberById:
   delete:
@@ -233,49 +144,21 @@ memberById:
         required: true
         schema:
           type: integer
+          format: int64
       - in: path
         name: participantId
         required: true
         schema:
           type: integer
+          format: int64
     responses:
       "204":
         description: "Jugador expulsado"
+      "400":
+        description: "El participante no está en este equipo."
       "401":
         $ref: "../main.yaml#/components/responses/Unauthorized"
       "403":
         description: "Prohibido: Solo Capitán."
-  patch:
-    tags:
-      - Equipos
-    summary: Jugador elige/cambia su dorsal
-    parameters:
-      - in: path
-        name: teamId
-        required: true
-        schema:
-          type: integer
-      - in: path
-        name: participantId
-        required: true
-        schema:
-          type: integer
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            required: [dorsal]
-            properties:
-              dorsal:
-                type: integer
-    responses:
-      "200":
-        description: "Dorsal asignado"
-      "400":
-        $ref: "../main.yaml#/components/responses/BadRequest"
-      "401":
-        $ref: "../main.yaml#/components/responses/Unauthorized"
-      "409":
-        description: "Error: este dorsal ya está asignado"
+      "404":
+        description: "Participante o equipo no encontrado."

@@ -9,15 +9,16 @@ participants:
         required: true
         schema:
           type: integer
+          format: int64
     responses:
       "200":
-        description: "Lista de Participations"
+        description: "Lista de participantes resumida"
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: "../schemas/participant.yaml#/ParticipantDetails"
+                $ref: "../schemas/participant.yaml#/ParticipantSummary"
       "404":
         description: "Liga no encontrada."
   post:
@@ -30,6 +31,7 @@ participants:
         required: true
         schema:
           type: integer
+          format: int64
     responses:
       "201":
         description: "Inscripción exitosa"
@@ -39,87 +41,61 @@ participants:
               $ref: "../schemas/participant.yaml#/ParticipantDetails"
       "401":
         $ref: "../main.yaml#/components/responses/Unauthorized"
+      "404":
+        description: "Liga no encontrada."
       "409":
         description: "El usuario ya participa en esta liga."
+      "422":
+        description: "Inscripciones cerradas o desajuste de categoría."
 
 participantById:
   patch:
     tags:
       - Participaciones
-    summary: Modificar roles de un participante (Asignar/Retirar Árbitro o Admin)
+    summary: Actualizar datos del participante (dorsal)
     parameters:
-      - in: path
-        name: leagueId
-        required: true
-        schema:
-          type: integer
       - in: path
         name: participantId
         required: true
         schema:
           type: integer
+          format: int64
     requestBody:
+      required: true
       content:
         application/json:
           schema:
-            $ref: "../schemas/participant.yaml#/ParticipationRoleDTO"
+            $ref: "../schemas/participant.yaml#/ParticipantUpdateRequest"
     responses:
       "200":
-        description: "Roles actualizados"
+        description: "Participante actualizado correctamente"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/participant.yaml#/ParticipantDetails"
+      "400":
+        description: "El participante no pertenece a un equipo."
       "401":
         $ref: "../main.yaml#/components/responses/Unauthorized"
       "403":
-        description: "Prohibido: Solo Administradores."
-  delete:
-    tags:
-      - Participaciones
-    summary: Expulsar a un participante de la liga
-    parameters:
-      - in: path
-        name: leagueId
-        required: true
-        schema:
-          type: integer
-      - in: path
-        name: participantId
-        required: true
-        schema:
-          type: integer
-    responses:
-      "204":
-        description: "Participante expulsado"
-      "401":
-        $ref: "../main.yaml#/components/responses/Unauthorized"
-      "403":
-        description: "Prohibido: Solo Administradores."
+        description: "Prohibido: Solo el propio participante."
+      "404":
+        description: "Participante o liga no encontrado."
+      "409":
+        description: "El dorsal ya está ocupado."
 
 participantAvailability:
   get:
     tags:
       - Participaciones
-    summary: Obtener la disponibilidad de un participante
-    description: Muestra en qué franjas horarias puede jugar/arbitrar este participante durante esta ronda específica.
+    summary: Obtener la disponibilidad horaria del participante en la liga
     parameters:
       - in: path
         name: leagueId
         required: true
         schema:
           type: integer
-      - in: path
-        name: phaseId
-        required: true
-        schema:
-          type: integer
-      - in: path
-        name: roundId
-        required: true
-        schema:
-          type: integer
-      - in: path
-        name: participantId
-        required: true
-        schema:
-          type: integer
+          format: int64
     responses:
       "200":
         description: "Lista de franjas elegidas por el participante."
@@ -132,36 +108,19 @@ participantAvailability:
       "401":
         $ref: "../main.yaml#/components/responses/Unauthorized"
       "404":
-        description: "Participante o ronda no encontrados."
+        description: "Participante o liga no encontrados."
 
   put:
     tags:
       - Participaciones
-    summary: Establecer o actualizar la disponibilidad del participante
-    description: >
-      El jugador/capitán/árbitro elige sus franjas disponibles basándose en la disponibilidad
-      previa de la ubicación. Sobrescribe sus preferencias anteriores para esta ronda.
+    summary: Establecer o actualizar la disponibilidad del participante en la liga
     parameters:
       - in: path
         name: leagueId
         required: true
         schema:
           type: integer
-      - in: path
-        name: phaseId
-        required: true
-        schema:
-          type: integer
-      - in: path
-        name: roundId
-        required: true
-        schema:
-          type: integer
-      - in: path
-        name: participantId
-        required: true
-        schema:
-          type: integer
+          format: int64
     requestBody:
       required: true
       content:
@@ -173,11 +132,11 @@ participantAvailability:
               format: int64
               description: 'dateTimeSlotIds'
     responses:
-      "200":
+      "204":
         description: "Disponibilidad del participante guardada correctamente."
       "400":
-        description: "Alguna de las franjas elegidas no está dentro de la disponibilidad permitida por la liga."
+        description: "Alguna de las franjas elegidas no es válida."
       "401":
         $ref: "../main.yaml#/components/responses/Unauthorized"
-      "403":
-        description: "Prohibido: Un usuario solo puede modificar su propia disponibilidad."
+      "404":
+        description: "Participante o liga no encontrados."

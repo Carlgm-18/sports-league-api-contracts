@@ -1,0 +1,29 @@
+uploadUrl:
+  post:
+    tags:
+      - Almacenamiento
+    summary: Obtener URL prefirmada para subir archivos
+    parameters:
+      - in: query
+        name: folder
+        required: true
+        schema:
+          type: string
+        description: "Carpeta destino en S3 (ej. PROFILES, SIGNS)"
+      - in: query
+        name: extension
+        required: true
+        schema:
+          type: string
+        description: "Extensión del archivo (ej. png, jpg)"
+    responses:
+      "200":
+        description: "URLs generadas con éxito"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/storage.yaml#/StorageUrlResponse"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"

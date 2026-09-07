@@ -213,6 +213,13 @@ components:
     RoundDetails:
       $ref: 'schemas/round.yaml#/RoundDetails'
 
+    StorageUrlResponse:
+      $ref: 'schemas/storage.yaml#/StorageUrlResponse'
+    RefereeType:
+      $ref: 'schemas/match.yaml#/RefereeType'
+    ForceRefereeRequest:
+      $ref: 'schemas/match.yaml#/ForceRefereeRequest'
+
   responses:
     BadRequest:
       description: "Los datos enviados son incorrectos o el formulario es inválido."
@@ -230,35 +237,38 @@ paths:
   /sports:
     $ref: 'paths/sport.yaml#/sports'
 
+  /auth/token/refresh:
+    $ref: 'paths/user.yaml#/refreshToken'
+  /auth/external-authentication:
+    $ref: 'paths/user.yaml#/externalAuthentication'
   /users/register:
     $ref: 'paths/user.yaml#/register'
   /users/login:
     $ref: 'paths/user.yaml#/login'
-  /auth/external-authentication:
-    $ref: 'paths/user.yaml#/externalAuthentication'
   /users/me/signature:
     $ref: 'paths/user.yaml#/signature'
   /users/me:
     $ref: 'paths/user.yaml#/me'
   /users/me/invitations:
     $ref: 'paths/user.yaml#/invitations'
-  /users/me/invitations/{requestId}:
-    $ref: 'paths/user.yaml#/invitationById'
   /users/me/leagues:
     $ref: 'paths/user.yaml#/leagues'
+
+  /storage/upload-url:
+    $ref: 'paths/storage.yaml#/uploadUrl'
 
   /leagues:
     $ref: 'paths/league.yaml#/leagues'
   /leagues/{leagueId}:
     $ref: 'paths/league.yaml#/leagueById'
+  /leagues/{leagueId}/start:
+    $ref: 'paths/league.yaml#/startLeague'
   /leagues/{leagueId}/phases:
     $ref: 'paths/league.yaml#/phases'
   /leagues/{leagueId}/phases/{phaseId}:
     $ref: 'paths/league.yaml#/phaseById'
   /leagues/{leagueId}/incidences:
     $ref: 'paths/league.yaml#/incidences'
-  /leagues/{leagueId}/incidences/{incidenceId}:
-    $ref: 'paths/league.yaml#/incidenceById'
   /leagues/{leagueId}/leaderboard:
     $ref: 'paths/league.yaml#/leaderboard'
   /leagues/{leagueId}/configuration:
@@ -267,18 +277,18 @@ paths:
     $ref: 'paths/league.yaml#/punctuationSystem'
   /leagues/{leagueId}/my-status:
     $ref: 'paths/league.yaml#/myStatus'
-  /leagues/{leagueId}/referee-requests:
-    $ref: 'paths/league.yaml#/refereeRequests'
+  /leagues/{leagueId}/my-status/availability:
+    $ref: 'paths/participant.yaml#/participantAvailability'
 
   /leagues/{leagueId}/participants:
     $ref: 'paths/participant.yaml#/participants'
-  /leagues/{leagueId}/participants/{participantId}:
+  /participants/{participantId}:
     $ref: 'paths/participant.yaml#/participantById'
-  /leagues/{leagueId}/phases/{phaseId}/rounds/{roundId}/participants/{participantId}/availability:
-    $ref: 'paths/participant.yaml#/participantAvailability'
 
+  /leagues/{leagueId}/requests:
+    $ref: 'paths/request.yaml#/requests'
   /requests/{requestId}:
-    $ref: 'paths/team.yaml#/resolveRequest'
+    $ref: 'paths/request.yaml#/requestById'
 
   /leagues/{leagueId}/teams:
     $ref: 'paths/team.yaml#/teams'
@@ -295,6 +305,10 @@ paths:
     $ref: 'paths/match.yaml#/matches'
   /matches/{matchId}:
     $ref: 'paths/match.yaml#/matchById'
+  /matches/{matchId}/referee/auto:
+    $ref: 'paths/match.yaml#/autoAssignReferee'
+  /matches/{matchId}/referee:
+    $ref: 'paths/match.yaml#/forceAssignReferee'
   /matches/{matchId}/schedule/proposals:
     $ref: 'paths/match.yaml#/scheduleProposals'
   /matches/{matchId}/schedule/proposals/{proposalId}:
@@ -305,5 +319,7 @@ paths:
     $ref: 'paths/match.yaml#/result'
   /matches/{matchId}/signatures:
     $ref: 'paths/match.yaml#/signatures'
-  /leagues/{leagueId}/phases/{phaseId}/rounds/{roundId}/availability:
+
+  /rounds/{roundId}/availability:
     $ref: 'paths/match.yaml#/availability'
+

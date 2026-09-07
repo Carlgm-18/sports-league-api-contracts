@@ -1,0 +1,90 @@
+requests:
+  post:
+    tags:
+      - Solicitudes
+    summary: Crear una nueva solicitud en una liga
+    description: "Permite enviar solicitudes para ser árbitro, crear un equipo o unirse a un equipo."
+    parameters:
+      - in: path
+        name: leagueId
+        required: true
+        schema:
+          type: integer
+          format: int64
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/league_requests.yaml#/BaseRequest"
+    responses:
+      "201":
+        description: "Solicitud creada con éxito"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/league_requests.yaml#/BaseRequest"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "404":
+        description: "Liga, equipo o participante no encontrado."
+
+requestById:
+  get:
+    tags:
+      - Solicitudes
+    summary: Obtener los detalles de una solicitud
+    parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      "200":
+        description: "Detalles de la solicitud"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/league_requests.yaml#/BaseRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: No tienes permisos para ver esta solicitud."
+      "404":
+        description: "Solicitud no encontrada."
+  patch:
+    tags:
+      - Solicitudes
+    summary: Resolver una solicitud (Aceptar / Rechazar)
+    parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          type: integer
+          format: int64
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/league_requests.yaml#/ResolveRequestInput"
+    responses:
+      "201":
+        description: "Solicitud resuelta con éxito"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/league_requests.yaml#/BaseRequest"
+      "400":
+        $ref: "../main.yaml#/components/responses/BadRequest"
+      "401":
+        $ref: "../main.yaml#/components/responses/Unauthorized"
+      "403":
+        description: "Prohibido: No tienes permisos para resolver esta solicitud."
+      "404":
+        description: "Solicitud no encontrada."
